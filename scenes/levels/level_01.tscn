@@ -45,7 +45,7 @@ Color = Color(1, 1, 1, 0.294118)
 metadata/_custom_type_script = "uid://csedmy4o537dc"
 
 [node name="CSGTorus3D" type="CSGTorus3D" parent="."]
-transform = Transform3D(-0.066669, -0.142317, -0.987573, -0.993711, -0.079773, 0.0785792, -0.0899649, 0.986601, -0.136103, -0.202023, 1.53983, -6.53873)
+transform = Transform3D(-0.105325, 0.98671, -0.123733, -0.619586, -0.162436, -0.767937, -0.77783, -0.00421924, 0.62846, 0.299773, 1.53983, -6.53873)
 inner_radius = 4.3364
 outer_radius = 4.24333
 
