@@ -45,17 +45,17 @@ Color = Color(1, 1, 1, 0.294118)
 metadata/_custom_type_script = "uid://csedmy4o537dc"
 
 [node name="CSGTorus3D" type="CSGTorus3D" parent="."]
-transform = Transform3D(-0.77783, -0.628216, -0.0180163, -0.619586, 0.771318, -0.145538, 0.105325, -0.102041, -0.989188, 0.663825, -0.155179, -9.44316)
+transform = Transform3D(-0.77783, -0.372857, 0.505922, -0.619586, 0.320031, -0.716724, 0.105325, -0.870952, -0.479947, -1.72793, 1.89771, -15.03)
 inner_radius = 4.3364
 outer_radius = 4.24333
 
 [node name="CSGTorus3D2" type="CSGTorus3D" parent="."]
-transform = Transform3D(-0.77783, 0.607389, 0.161429, -0.619586, -0.784148, -0.0350007, 0.105325, -0.127243, 0.986263, -7.85599, 2.22887, -19.8124)
+transform = Transform3D(-0.77783, -0.366435, 0.510593, -0.619586, 0.310949, -0.72071, 0.105325, -0.876947, -0.468904, -7.85599, 2.22887, -19.8124)
 inner_radius = 4.3364
 outer_radius = 4.24333
 
 [node name="Ship" parent="." instance=ExtResource("3_uvc87")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0262107, 0, -0.433761)
+transform = Transform3D(5.16762, 0, 0, 0, 0.725269, 0, 0, 0, 0.490386, -0.0824684, 0, -0.433761)
 
 [node name="CSGBox3D2" type="CSGBox3D" parent="."]
 transform = Transform3D(0.978742, -0.205094, 0, 0.205094, 0.978742, 0, 0, 0, 1, 0, 3.34282, -23.1406)
