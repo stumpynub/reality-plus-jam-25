@@ -12,10 +12,10 @@ public partial class Ship : CharacterBody3D
 	[Export] private InteractableJoystick _joystick;
 
 
-    public override void _Ready()
-    {
+	public override void _Ready()
+	{
 		_rotXform = GlobalTransform; 
-    }
+	}
 
 
 	public override void _PhysicsProcess(double delta)

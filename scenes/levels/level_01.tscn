@@ -47,6 +47,11 @@ metadata/_custom_type_script = "uid://csedmy4o537dc"
 [node name="Ship" parent="." instance=ExtResource("3_uvc87")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0262107, 0, -0.433761)
 
+[node name="CSGTorus3D" type="CSGTorus3D" parent="Ship"]
+transform = Transform3D(-0.066669, -0.142317, -0.987573, -0.993711, -0.079773, 0.0785792, -0.0899649, 0.986601, -0.136103, -0.175812, 1.53983, -6.10497)
+inner_radius = 4.3364
+outer_radius = 4.24333
+
 [node name="CSGBox3D2" type="CSGBox3D" parent="."]
 transform = Transform3D(0.978742, -0.205094, 0, 0.205094, 0.978742, 0, 0, 0, 1, 0, 3.34282, -23.1406)
 size = Vector3(1, 14.7706, 1)
