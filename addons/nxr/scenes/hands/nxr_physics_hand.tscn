@@ -1,0 +1,354 @@
+[gd_scene load_steps=32 format=3 uid="uid://dfwuswlg4dnsw"]
+
+[ext_resource type="Script" uid="uid://cp2e085tdkeyj" path="res://addons/nxr/scripts/hand/PhysicsHand.cs" id="1_b0jr6"]
+[ext_resource type="AnimationLibrary" uid="uid://1qjj5dgp6jrk" path="res://assets/models/combat_glovevs/anim_combat_gloves.res" id="2_wx7y5"]
+[ext_resource type="PackedScene" uid="uid://b5svgttouh1uk" path="res://addons/nxr/scenes/hands/nxr_pose_animation_tree.tscn" id="3_j5lj8"]
+[ext_resource type="PackedScene" uid="uid://hd14ixbbmq6m" path="res://assets/models/combat_glovevs/combat_gloves_r.glb" id="4_ag72o"]
+[ext_resource type="Material" uid="uid://5od2kxyj8xp8" path="res://assets/models/combat_glovevs/mat_gloves.tres" id="5_me162"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_k1qaf"]
+size = Vector3(0.101563, 0.129105, 0.21228)
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ct02v"]
+animation = &"idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_n1gx3"]
+animation = &"thumb_down"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_yfmwl"]
+animation = &"grip"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_qm82a"]
+animation = &"trigger"
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_ms3pn"]
+filter_enabled = true
+filters = ["GloveR/GeneralSkeleton:RightThumbDistal", "GloveR/GeneralSkeleton:RightThumbMetacarpal", "GloveR/GeneralSkeleton:RightThumbProximal"]
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_sbxia"]
+filter_enabled = true
+filters = ["GloveR/GeneralSkeleton:RightLittleDistal", "GloveR/GeneralSkeleton:RightLittleIntermediate", "GloveR/GeneralSkeleton:RightLittleProximal", "GloveR/GeneralSkeleton:RightMiddleDistal", "GloveR/GeneralSkeleton:RightMiddleIntermediate", "GloveR/GeneralSkeleton:RightMiddleProximal", "GloveR/GeneralSkeleton:RightRingDistal", "GloveR/GeneralSkeleton:RightRingIntermediate", "GloveR/GeneralSkeleton:RightRingProximal", "GloveR/GeneralSkeleton:RightThumbDistal", "GloveR/GeneralSkeleton:RightThumbMetacarpal", "GloveR/GeneralSkeleton:RightThumbProximal"]
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_f7e42"]
+filter_enabled = true
+filters = ["GloveR/GeneralSkeleton:RightIndexDistal", "GloveR/GeneralSkeleton:RightIndexIntermediate", "GloveR/GeneralSkeleton:RightIndexProximal"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_k1qaf"]
+resource_local_to_scene = true
+graph_offset = Vector2(-468.843, -109.907)
+nodes/Animation/node = SubResource("AnimationNodeAnimation_qm82a")
+nodes/Animation/position = Vector2(-560, 20)
+"nodes/Animation 2/node" = SubResource("AnimationNodeAnimation_ct02v")
+"nodes/Animation 2/position" = Vector2(-560, -120)
+"nodes/Animation 3/node" = SubResource("AnimationNodeAnimation_n1gx3")
+"nodes/Animation 3/position" = Vector2(-220, 260)
+"nodes/Animation 4/node" = SubResource("AnimationNodeAnimation_yfmwl")
+"nodes/Animation 4/position" = Vector2(-420, 240)
+nodes/ax_touch/node = SubResource("AnimationNodeBlend2_ms3pn")
+nodes/ax_touch/position = Vector2(66.5212, 77.2077)
+nodes/grip/node = SubResource("AnimationNodeBlend2_sbxia")
+nodes/grip/position = Vector2(-140, -20)
+nodes/output/position = Vector2(280, 120)
+nodes/trigger/node = SubResource("AnimationNodeBlend2_f7e42")
+nodes/trigger/position = Vector2(-360, -60)
+node_connections = [&"ax_touch", 0, &"grip", &"ax_touch", 1, &"Animation 3", &"grip", 0, &"trigger", &"grip", 1, &"Animation 4", &"output", 0, &"ax_touch", &"trigger", 0, &"Animation 2", &"trigger", 1, &"Animation"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_m7nmb"]
+resource_local_to_scene = true
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_muvl7"]
+resource_local_to_scene = true
+graph_offset = Vector2(-631.038, -0.583031)
+nodes/DefaultPose/node = SubResource("AnimationNodeAnimation_m7nmb")
+nodes/DefaultPose/position = Vector2(-320, 100)
+nodes/output/position = Vector2(140, 120)
+node_connections = [&"output", 0, &"DefaultPose"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_m8dny"]
+xfade_time = 0.1
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_v7006"]
+xfade_time = 0.1
+reset = false
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_326re"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_0pmdh"]
+resource_local_to_scene = true
+states/End/position = Vector2(791, 93)
+states/IdleTree/node = SubResource("AnimationNodeBlendTree_k1qaf")
+states/IdleTree/position = Vector2(432, 93)
+states/PoseTree/node = SubResource("AnimationNodeBlendTree_muvl7")
+states/PoseTree/position = Vector2(607, 93)
+states/Start/position = Vector2(219, 93)
+transitions = ["IdleTree", "PoseTree", SubResource("AnimationNodeStateMachineTransition_m8dny"), "PoseTree", "IdleTree", SubResource("AnimationNodeStateMachineTransition_v7006"), "Start", "IdleTree", SubResource("AnimationNodeStateMachineTransition_326re")]
+graph_offset = Vector2(22, -36)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_k1qaf"]
+radius = 0.0316278
+height = 0.124348
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_m7nmb"]
+radius = 0.0118665
+height = 0.0428769
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_muvl7"]
+radius = 0.0103703
+height = 0.0342696
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_wy3fx"]
+radius = 0.0124378
+height = 0.0469465
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_yg1u0"]
+radius = 0.0101984
+height = 0.037091
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_m6we7"]
+radius = 0.0134467
+height = 0.0357106
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ilfr1"]
+radius = 0.00298543
+height = 0.0298543
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_b1t6h"]
+radius = 0.01344
+height = 0.0442987
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_jef87"]
+radius = 0.0115628
+height = 0.0347664
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_34aoi"]
+radius = 0.0191325
+height = 0.0553045
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_82jug"]
+radius = 0.0133549
+height = 0.0406418
+
+[node name="Hand" type="RigidBody3D" node_paths=PackedStringArray("_animTree")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.00270573)
+top_level = true
+collision_layer = 2
+collision_mask = 9
+can_sleep = false
+freeze = true
+max_contacts_reported = 1
+linear_damp = 30.0
+angular_damp = 50.0
+script = ExtResource("1_b0jr6")
+_velFix = 1.8
+_animTree = NodePath("AnimationTree")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0228653, 0.0997925)
+shape = SubResource("BoxShape3D_k1qaf")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../combat_gloves_r")
+callback_mode_process = 0
+libraries = {
+&"": ExtResource("2_wx7y5")
+}
+
+[node name="AnimationTree" parent="." instance=ExtResource("3_j5lj8")]
+callback_mode_process = 0
+tree_root = SubResource("AnimationNodeStateMachine_0pmdh")
+parameters/IdleTree/ax_touch/blend_amount = 0.0
+
+[node name="combat_gloves_r" parent="." instance=ExtResource("4_ag72o")]
+transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, 0, 0, 0.0657446)
+
+[node name="GeneralSkeleton" parent="combat_gloves_r/GloveR" index="0"]
+bones/1/scale = Vector3(1.00048, 1.00048, 1.00048)
+bones/3/rotation = Quaternion(0, 0, 0.0916059, 0.995795)
+bones/5/rotation = Quaternion(0, 0, -0.120882, 0.992667)
+bones/8/rotation = Quaternion(0, 0, -0.164402, 0.986394)
+bones/9/rotation = Quaternion(0, 0, -0.218603, 0.975814)
+bones/9/scale = Vector3(0.999999, 1, 0.999999)
+bones/11/rotation = Quaternion(0, 0, -0.102593, 0.994723)
+bones/13/scale = Vector3(1, 0.999392, 0.999392)
+bones/14/scale = Vector3(1.00154, 0.999947, 0.998515)
+bones/15/scale = Vector3(1.00025, 1, 0.999748)
+
+[node name="CombatGlove" parent="combat_gloves_r/GloveR/GeneralSkeleton" index="0"]
+material_override = ExtResource("5_me162")
+
+[node name="PhysicalBoneSimulator3D" type="PhysicalBoneSimulator3D" parent="combat_gloves_r/GloveR/GeneralSkeleton" index="1"]
+
+[node name="Physical Bone hand_r" type="PhysicalBone3D" parent="combat_gloves_r/GloveR/GeneralSkeleton/PhysicalBoneSimulator3D"]
+transform = Transform3D(1.09908, -0.0416631, -0.157662, 0, 1.07424, -0.283873, 0.163074, 0.280799, 1.0626, 0.00793052, 0.0154056, 0.0970722)
+collision_layer = 2
+collision_mask = 9
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.40636e-08, 4.65661e-09, 0.0559569)
+body_offset = Transform3D(1.09908, -0.0416632, -0.157662, 0, 1.07424, -0.283874, 0.163074, 0.2808, 1.0626, 0.00882217, 0.0158847, -0.0594598)
+bone_name = "hand_r"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="combat_gloves_r/GloveR/GeneralSkeleton/PhysicalBoneSimulator3D/Physical Bone hand_r"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_k1qaf")
+
+[node name="Physical Bone RightIndexProximal" type="PhysicalBone3D" parent="combat_gloves_r/GloveR/GeneralSkeleton/PhysicalBoneSimulator3D"]
+transform = Transform3D(0, -1.10473, 0.118908, 1.11078, -0.00289656, -0.0269108, 0.0270663, 0.118873, 1.1044, 0.0144573, 0.0318118, 0.0162929)
+collision_layer = 2
+collision_mask = 9
+joint_type = 1
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.57455e-06, 1.07492e-07, 0.0193048)
+body_offset = Transform3D(0.0270533, 0.118816, 1.10387, 0, 1.1042, -0.118851, -1.11025, 0.00289517, 0.0268979, -0.02131, 0.00229428, -0.000521008)
+bone_name = "RightIndexProximal"
+joint_constraints/bias = 0.3
+joint_constraints/damping = 1.0
+joint_constraints/impulse_clamp = 0.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="combat_gloves_r/GloveR/GeneralSkeleton/PhysicalBoneSimulator3D/Physical Bone RightIndexProximal"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_m7nmb")
+
+[node name="Physical Bone RightIndexIntermediate" type="PhysicalBone3D" parent="combat_gloves_r/GloveR/GeneralSkeleton/PhysicalBoneSimulator3D"]
+transform = Transform3D(0, -1.06499, 0.3168, 1.10857, 0.0214118, 0.0719802, -0.0750973, 0.316076, 1.06256, 0.0072741, 0.03122, -0.0221753)
+collision_layer = 2
+collision_mask = 9
+joint_type = 1
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.69261e-05, 0.000193551, 0.0160794)
+body_offset = Transform3D(-0.0750614, 0.315924, 1.06205, 0, 1.06448, -0.316648, -1.10804, -0.0214015, -0.0719457, -0.0171418, 0.00488548, 0.00110899)
+bone_name = "RightIndexIntermediate"
+joint_constraints/bias = 0.3
+joint_constraints/damping = 1.0
+joint_constraints/impulse_clamp = 0.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="combat_gloves_r/GloveR/GeneralSkeleton/PhysicalBoneSimulator3D/Physical Bone RightIndexIntermediate"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_muvl7")
+
+[node name="Physical Bone RightMiddleProximal" type="PhysicalBone3D" parent="combat_gloves_r/GloveR/GeneralSkeleton/PhysicalBoneSimulator3D"]
+transform = Transform3D(0, -1.10908, 0.0672007, 1.11049, 0.00224149, 0.0369935, -0.0370613, 0.0671633, 1.10846, 0.0199782, 0.00375715, 0.0119824)
+collision_layer = 2
+collision_mask = 9
+joint_type = 1
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.74392e-08, 1.81207e-08, 0.0208832)
+body_offset = Transform3D(-0.0370612, 0.0671635, 1.10846, 0, 1.10908, -0.0672009, -1.11049, -0.00224149, -0.0369933, -0.0231482, 0.00140335, 0.000772486)
+bone_name = "RightMiddleProximal"
+joint_constraints/bias = 0.3
+joint_constraints/damping = 1.0
+joint_constraints/impulse_clamp = 0.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="combat_gloves_r/GloveR/GeneralSkeleton/PhysicalBoneSimulator3D/Physical Bone RightMiddleProximal"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_wy3fx")
+
+[node name="Physical Bone RightMiddleIntermediate" type="PhysicalBone3D" parent="combat_gloves_r/GloveR/GeneralSkeleton/PhysicalBoneSimulator3D"]
+transform = Transform3D(-0.00526962, -0.930517, 0.60719, 1.11089, 0.0072364, 0.0207309, -0.0213159, 0.607169, 0.930301, 0.00844052, 0.00263867, -0.0266924)
+collision_layer = 2
+collision_mask = 9
+joint_type = 1
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.49889e-08, 4.31978e-07, 0.0166912)
+body_offset = Transform3D(-0.0219575, 0.36611, 1.04883, -2.79397e-09, 1.04904, -0.366181, -1.11089, -0.00723638, -0.0207308, -0.0175064, 0.00611155, 0.000345953)
+bone_name = "RightMiddleIntermediate"
+joint_constraints/bias = 0.3
+joint_constraints/damping = 1.0
+joint_constraints/impulse_clamp = 0.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="combat_gloves_r/GloveR/GeneralSkeleton/PhysicalBoneSimulator3D/Physical Bone RightMiddleIntermediate"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_yg1u0")
+
+[node name="Physical Bone RightLittleProximal" type="PhysicalBone3D" parent="combat_gloves_r/GloveR/GeneralSkeleton/PhysicalBoneSimulator3D"]
+transform = Transform3D(0, -1.11095, 0.0190125, 1.07889, 0.00454535, 0.265596, -0.265635, 0.0184612, 1.07873, 0.0043439, -0.0415338, 0.0307476)
+collision_layer = 2
+collision_mask = 9
+joint_type = 1
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.10712e-07, 4.42014e-10, 0.0160698)
+body_offset = Transform3D(-0.265635, 0.0184612, 1.07873, 0, 1.11095, -0.0190125, -1.07889, -0.00454535, -0.265596, -0.017335, 0.000305526, 0.00426784)
+bone_name = "RightLittleProximal"
+joint_constraints/bias = 0.3
+joint_constraints/damping = 1.0
+joint_constraints/impulse_clamp = 0.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="combat_gloves_r/GloveR/GeneralSkeleton/PhysicalBoneSimulator3D/Physical Bone RightLittleProximal"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_m6we7")
+
+[node name="Physical Bone RightLittleIntermediate" type="PhysicalBone3D" parent="combat_gloves_r/GloveR/GeneralSkeleton/PhysicalBoneSimulator3D"]
+transform = Transform3D(-0.070887, -0.95469, 0.564012, 1.0894, 0.0454152, 0.213793, -0.206749, 0.566632, 0.93314, -0.0035394, -0.0486754, 0.00087779)
+collision_layer = 2
+collision_mask = 9
+joint_type = 1
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.16765e-06, -1.06075e-06, 0.0134339)
+body_offset = Transform3D(-0.218563, 0.226368, 1.06562, 3.27826e-07, 1.08686, -0.230879, -1.0894, -0.0454151, -0.213793, -0.0143149, 0.00310275, 0.00287329)
+bone_name = "RightLittleIntermediate"
+joint_constraints/bias = 0.3
+joint_constraints/damping = 1.0
+joint_constraints/impulse_clamp = 0.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="combat_gloves_r/GloveR/GeneralSkeleton/PhysicalBoneSimulator3D/Physical Bone RightLittleIntermediate"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_ilfr1")
+
+[node name="Physical Bone RightRingProximal" type="PhysicalBone3D" parent="combat_gloves_r/GloveR/GeneralSkeleton/PhysicalBoneSimulator3D"]
+transform = Transform3D(0, -1.10848, 0.0764461, 1.10529, 0.00781346, 0.113296, -0.113565, 0.0760458, 1.10267, 0.0127071, -0.0207845, 0.0166217)
+collision_layer = 2
+collision_mask = 9
+joint_type = 1
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.10827e-07, 4.15093e-08, 0.0199351)
+body_offset = Transform3D(-0.113565, 0.0760459, 1.10267, 0, 1.10848, -0.0764462, -1.10529, -0.00781347, -0.113296, -0.0219819, 0.00152392, 0.00225845)
+bone_name = "RightRingProximal"
+joint_constraints/bias = 0.3
+joint_constraints/damping = 1.0
+joint_constraints/impulse_clamp = 0.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="combat_gloves_r/GloveR/GeneralSkeleton/PhysicalBoneSimulator3D/Physical Bone RightRingProximal"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_b1t6h")
+
+[node name="Physical Bone RightRingIntermediate" type="PhysicalBone3D" parent="combat_gloves_r/GloveR/GeneralSkeleton/PhysicalBoneSimulator3D"]
+transform = Transform3D(-0.017083, -0.971491, 0.538963, 1.10795, 0.0248562, 0.0799215, -0.0819356, 0.538661, 0.968349, 0.00275106, -0.0242959, -0.0205072)
+collision_layer = 2
+collision_mask = 9
+joint_type = 1
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.346e-06, -6.13731e-07, 0.0156441)
+body_offset = Transform3D(-0.0836972, 0.329036, 1.05797, 5.02914e-08, 1.06098, -0.329974, -1.10795, -0.024856, -0.0799212, -0.0165506, 0.0051628, 0.00125288)
+bone_name = "RightRingIntermediate"
+joint_constraints/bias = 0.3
+joint_constraints/damping = 1.0
+joint_constraints/impulse_clamp = 0.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="combat_gloves_r/GloveR/GeneralSkeleton/PhysicalBoneSimulator3D/Physical Bone RightRingIntermediate"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_jef87")
+
+[node name="Physical Bone RightThumbMetacarpal" type="PhysicalBone3D" parent="combat_gloves_r/GloveR/GeneralSkeleton/PhysicalBoneSimulator3D"]
+transform = Transform3D(0.457808, -1.00662, 0.108195, 0.778335, 0.274008, -0.744098, 0.647437, 0.382379, 0.818034, -0.0151392, 0.0430232, 0.0903927)
+collision_layer = 2
+collision_mask = 9
+joint_type = 1
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.00909e-05, -3.54834e-06, 0.0174132)
+body_offset = Transform3D(-0.778335, -0.274008, 0.744099, -1.19209e-07, 1.0433, 0.384186, -0.793428, 0.269123, -0.730832, -0.012966, -0.00668622, 0.0127191)
+bone_name = "RightThumbMetacarpal"
+joint_constraints/bias = 0.3
+joint_constraints/damping = 1.0
+joint_constraints/impulse_clamp = 0.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="combat_gloves_r/GloveR/GeneralSkeleton/PhysicalBoneSimulator3D/Physical Bone RightThumbMetacarpal"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_34aoi")
+
+[node name="Physical Bone RightThumbProximal" type="PhysicalBone3D" parent="combat_gloves_r/GloveR/GeneralSkeleton/PhysicalBoneSimulator3D"]
+transform = Transform3D(0.290587, -1.03156, 0.293279, 0.990579, 0.14174, -0.48294, 0.410951, 0.387767, 0.956726, -0.0223596, 0.0648599, 0.0586996)
+collision_layer = 2
+collision_mask = 9
+joint_type = 1
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.09317e-05, 4.63333e-06, 0.018266)
+body_offset = Transform3D(-0.989056, -0.141522, 0.482198, 1.49012e-08, 1.06685, 0.313113, -0.504366, 0.279547, -0.95248, -0.00885754, -0.00572426, 0.017371)
+bone_name = "RightThumbProximal"
+joint_constraints/bias = 0.3
+joint_constraints/damping = 1.0
+joint_constraints/impulse_clamp = 0.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="combat_gloves_r/GloveR/GeneralSkeleton/PhysicalBoneSimulator3D/Physical Bone RightThumbProximal"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, -0.00280428, 2.91038e-11, -1.74623e-10)
+shape = SubResource("CapsuleShape3D_82jug")
+
+[editable path="combat_gloves_r"]

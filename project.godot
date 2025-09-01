@@ -1,0 +1,38 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="reality-plus-jam"
+run/main_scene="uid://csotp5pvwxaxi"
+config/features=PackedStringArray("4.4", "C#", "Forward Plus")
+config/icon="res://icon.svg"
+
+[autoload]
+
+NXRGlobal="*res://addons/nxr/scripts/globals/NXRGlobal.cs"
+
+[dotnet]
+
+project/assembly_name="reality-plus-jam"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/nxr/plugin.cfg")
+
+[physics]
+
+3d/physics_engine="Jolt Physics"
+jolt_physics_3d/simulation/areas_detect_static_bodies=true
+
+[xr]
+
+openxr/enabled=true
+shaders/enabled=true

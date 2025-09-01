@@ -1,0 +1,99 @@
+[gd_scene load_steps=13 format=3 uid="uid://ctrtq0t2fqwtr"]
+
+[ext_resource type="Script" uid="uid://bdelgt54lma6n" path="res://addons/nxr/scripts/player/Player.cs" id="1_rc1uy"]
+[ext_resource type="Resource" uid="uid://dqooh1vsmo8b8" path="res://addons/nxr/resources/default_player_settings.tres" id="2_8s0nb"]
+[ext_resource type="Script" uid="uid://dsd5qvr5r2h2e" path="res://addons/nxr/scripts/core/Controller.cs" id="3_ub7va"]
+[ext_resource type="PackedScene" uid="uid://8ap3o7qw7wri" path="res://addons/nxr/scenes/ui/UIPointer.tscn" id="4_2rouu"]
+[ext_resource type="PackedScene" uid="uid://b5s345q0wunft" path="res://addons/nxr/scenes/hands/nxr_player_hand.tscn" id="5_utiyv"]
+[ext_resource type="Script" uid="uid://b7pqx80rb6u78" path="res://addons/nxr/scripts/player/components/PlayerTurn.cs" id="6_ias0r"]
+[ext_resource type="Script" uid="uid://bep8ipole76o3" path="res://addons/nxr/scripts/player/components/PlayerWalk.cs" id="7_tckao"]
+[ext_resource type="Script" uid="uid://b47k7u6qq7nt8" path="res://addons/nxr/scripts/interactable/interactors/XRControllerInteractor.cs" id="8_1b4oq"]
+[ext_resource type="Script" uid="uid://ccr8d8lu5a7tv" path="res://addons/nxr/scripts/hand/HandPoseBase.cs" id="9_m08ig"]
+[ext_resource type="Script" uid="uid://ceeilt0qd8lgv" path="res://addons/nxr/scripts/audio/PlayerStepController.cs" id="15_4utrt"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_5u2ih"]
+radius = 2.67682
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_hf082"]
+streams_count = 3
+
+[node name="NXRPlayer" type="CharacterBody3D" node_paths=PackedStringArray("_leftController", "_rightController", "_xrOrigin")]
+collision_layer = 2
+floor_stop_on_slope = false
+floor_snap_length = 0.0
+script = ExtResource("1_rc1uy")
+PlayerSettings = ExtResource("2_8s0nb")
+_dominantHand = 1
+_leftController = NodePath("XROrigin3D/LeftController")
+_rightController = NodePath("XROrigin3D/RightController")
+_xrOrigin = NodePath("XROrigin3D")
+
+[node name="PlayerWalk" type="Node" parent="."]
+script = ExtResource("7_tckao")
+_movementDirection = 1
+_walkSpeed = 40.025
+
+[node name="PlayerTurn" type="Node" parent="."]
+script = ExtResource("6_ias0r")
+_rotationMode = 1
+_smoothTurnSpeed = 360.0
+
+[node name="XROrigin3D" type="XROrigin3D" parent="."]
+current = true
+
+[node name="LeftController" type="XRController3D" parent="XROrigin3D"]
+tracker = &"left_hand"
+script = ExtResource("3_ub7va")
+
+[node name="RayCast3D" parent="XROrigin3D/LeftController" node_paths=PackedStringArray("_controller", "_interactor") instance=ExtResource("4_2rouu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00678109, -0.00419024)
+_controller = NodePath("..")
+_interactor = NodePath("../LeftInteractor")
+
+[node name="LeftInteractor" type="Area3D" parent="XROrigin3D/LeftController" node_paths=PackedStringArray("Controller")]
+collision_mask = 9
+script = ExtResource("8_1b4oq")
+Controller = NodePath("..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="XROrigin3D/LeftController/LeftInteractor"]
+shape = SubResource("SphereShape3D_5u2ih")
+
+[node name="RightController" type="XRController3D" parent="XROrigin3D"]
+tracker = &"right_hand"
+script = ExtResource("3_ub7va")
+
+[node name="RayCast3D" parent="XROrigin3D/RightController" node_paths=PackedStringArray("_controller", "_interactor") instance=ExtResource("4_2rouu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00678109, -0.00419024)
+_controller = NodePath("..")
+_interactor = NodePath("../RightInteractor")
+
+[node name="RightInteractor" type="Area3D" parent="XROrigin3D/RightController" node_paths=PackedStringArray("Controller")]
+collision_mask = 9
+script = ExtResource("8_1b4oq")
+Controller = NodePath("..")
+
+[node name="HandRight" parent="XROrigin3D/RightController/RightInteractor" node_paths=PackedStringArray("Interactor") instance=ExtResource("5_utiyv")]
+transform = Transform3D(0.96266, -0.132707, 0.235956, 0.0989945, 0.983804, 0.149432, -0.251965, -0.120494, 0.960206, 0, -0.048, 0)
+Interactor = NodePath("..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="XROrigin3D/RightController/RightInteractor"]
+shape = SubResource("SphereShape3D_5u2ih")
+
+[node name="HandPoseBase" type="RemoteTransform3D" parent="XROrigin3D/RightController/RightInteractor"]
+script = ExtResource("9_m08ig")
+metadata/_custom_type_script = "uid://ccr8d8lu5a7tv"
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="XROrigin3D/RightController"]
+radius = 0.0269649
+
+[node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D"]
+cull_mask = 1048559
+current = true
+
+[node name="UX" type="Node3D" parent="XROrigin3D/XRCamera3D"]
+
+[node name="PlayerStepController" type="AudioStreamPlayer3D" parent="." node_paths=PackedStringArray("_player")]
+script = ExtResource("15_4utrt")
+_player = NodePath("..")
+_stepClip = SubResource("AudioStreamRandomizer_hf082")
+metadata/_custom_type_script = "uid://ceeilt0qd8lgv"

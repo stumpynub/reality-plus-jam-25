@@ -1,0 +1,91 @@
+[gd_scene load_steps=10 format=3 uid="uid://cjtqkp5hxm8bn"]
+
+[ext_resource type="PackedScene" uid="uid://ctrtq0t2fqwtr" path="res://addons/nxr/scenes/player/nxr_player.tscn" id="1_1wnua"]
+[ext_resource type="Script" uid="uid://dd500m0nrq3wx" path="res://scrips/Ship.cs" id="1_4qnn8"]
+[ext_resource type="Script" uid="uid://ccehg74pbum6p" path="res://addons/nxr/scripts/interactable/items/InteractableJoystick.cs" id="2_3c87n"]
+[ext_resource type="Script" uid="uid://y1lajxl5h81u" path="res://addons/nxr/resources/scripts/ResHaptic.cs" id="3_4qnn8"]
+
+[sub_resource type="Resource" id="Resource_4qnn8"]
+script = ExtResource("3_4qnn8")
+Frequency = 0.5
+Amplitude = 0.5
+Duration = 0.1
+
+[sub_resource type="Resource" id="Resource_1grn0"]
+script = ExtResource("3_4qnn8")
+Frequency = 0.5
+Amplitude = 0.5
+Duration = 0.1
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_c5u2v"]
+size = Vector3(0.0576172, 0.22583, 0.0373535)
+
+[sub_resource type="Resource" id="Resource_ls8mp"]
+script = ExtResource("3_4qnn8")
+Frequency = 0.5
+Amplitude = 0.5
+Duration = 0.1
+
+[sub_resource type="Resource" id="Resource_c5u2v"]
+script = ExtResource("3_4qnn8")
+Frequency = 0.5
+Amplitude = 0.5
+Duration = 0.1
+
+[node name="Ship" type="CharacterBody3D" node_paths=PackedStringArray("_throttle", "_joystick")]
+script = ExtResource("1_4qnn8")
+_throttle = NodePath("Throttle")
+_joystick = NodePath("Joy")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.074988, 0.449524)
+size = Vector3(2.03516, 0.139526, 5.31018)
+
+[node name="NXRPlayer" parent="." instance=ExtResource("1_1wnua")]
+_gravityEnabled = false
+_enableHeadCollider = false
+_enableBodyCollider = false
+_stepHeight = 0.0
+
+[node name="Throttle" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.707107, -0.707107, 0, 0.707107, 0.707107, -0.310938, 0.65718, -0.298029)
+freeze = true
+script = ExtResource("2_3c87n")
+X = 0.785398
+_xSnapDegree = 25.0
+_zSnapDegree = 0.2
+_positionMultiplier = 2.0
+XRatio = 1.0
+ZRatio = nan
+_zClampMin = 0.0
+_zClampMax = 0.0
+_grabPulse = SubResource("Resource_4qnn8")
+_dropPulse = SubResource("Resource_1grn0")
+metadata/_custom_type_script = "uid://ccehg74pbum6p"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Throttle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0655518, 0)
+shape = SubResource("BoxShape3D_c5u2v")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Throttle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0819504, 0)
+size = Vector3(0.0488281, 0.186523, 0.0351563)
+
+[node name="Joy" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.208936, 0.65718, -0.298029)
+freeze = true
+script = ExtResource("2_3c87n")
+_returnOnDrop = true
+XRatio = 0.5
+ZRatio = 0.5
+_grabPulse = SubResource("Resource_ls8mp")
+_dropPulse = SubResource("Resource_c5u2v")
+metadata/_custom_type_script = "uid://ccehg74pbum6p"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Joy"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0655518, 0)
+shape = SubResource("BoxShape3D_c5u2v")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Joy"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0819504, 0)
+size = Vector3(0.0488281, 0.186523, 0.0351563)

@@ -1,0 +1,163 @@
+[gd_scene load_steps=15 format=3 uid="uid://p8kyfjdeftpe"]
+
+[ext_resource type="Script" uid="uid://mnfbjnymv1eh" path="res://addons/nxr/scripts/player/PlayerRigid.cs" id="1_3qkco"]
+[ext_resource type="Script" uid="uid://dsd5qvr5r2h2e" path="res://addons/nxr/scripts/core/Controller.cs" id="5_rgojt"]
+[ext_resource type="PackedScene" uid="uid://8ap3o7qw7wri" path="res://addons/nxr/scenes/ui/UIPointer.tscn" id="6_3rer7"]
+[ext_resource type="Script" uid="uid://bk2f8esgq8ajp" path="res://addons/nxr/scripts/interactable/interactors/Interactor.cs" id="7_pt58r"]
+[ext_resource type="PackedScene" uid="uid://dfwuswlg4dnsw" path="res://addons/nxr/scenes/hands/nxr_physics_hand.tscn" id="9_f60de"]
+[ext_resource type="Script" uid="uid://b6i6o08bys8n1" path="res://addons/nxr/scenes/player/InteractLine.cs" id="9_uoa43"]
+[ext_resource type="Script" uid="uid://b7vdq7oofngy0" path="res://addons/nxr/scripts/player/components_physics/PlayerWalkRigid.cs" id="10_3qkco"]
+[ext_resource type="Shader" uid="uid://7w32832defs1" path="res://addons/nxr/assets/shader_pointer.gdshader" id="10_hho0e"]
+[ext_resource type="Script" uid="uid://d2x8o8jxj4xsa" path="res://addons/nxr/scripts/player/components/PlayerTurnRigid.cs" id="11_f60de"]
+[ext_resource type="Script" uid="uid://ddxhq234tr10l" path="res://addons/nxr/scripts/util/PolygonPath.cs" id="11_tshae"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_5u2ih"]
+radius = 2.67682
+
+[sub_resource type="Curve3D" id="Curve3D_b5egw"]
+resource_local_to_scene = true
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, -0.0174796, 0, 0, 0, 0, 0, 0, 0, 0, 0.0811427, -0.108889, 0, 0, 0, 0, 0, 0, 0, 0.171276, -0.213333, 0, 0, 0, 0, 0, 0, 0, 0.238155, -0.313333, 0, 0, 0, 0, 0, 0, 0, 0.265695, -0.408889, 0, 0, 0, 0, 0, 0, 0, 0.251275, -0.5, 0, 0, 0, 0, 0, 0, 0, 0.208155, -0.586667, 0, 0, 0, 0, 0, 0, 0, 0.153276, -0.668889, 0, 0, 0, 0, 0, 0, 0, 0.0916929, -0.746667, 0, 0, 0, 0, 0, 0, 0, 0.0119207, -0.82),
+"tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+}
+point_count = 10
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_uj2o0"]
+render_priority = 0
+shader = ExtResource("10_hho0e")
+shader_parameter/color = Color(1, 1, 1, 1)
+shader_parameter/opacity = 0.05
+
+[sub_resource type="Curve3D" id="Curve3D_jow1a"]
+resource_local_to_scene = true
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, -0.0174796, 0, 0, 0, 0, 0, 0, 0, 0, 0.0811427, -0.108889, 0, 0, 0, 0, 0, 0, 0, 0.171276, -0.213333, 0, 0, 0, 0, 0, 0, 0, 0.238155, -0.313333, 0, 0, 0, 0, 0, 0, 0, 0.265695, -0.408889, 0, 0, 0, 0, 0, 0, 0, 0.251275, -0.5, 0, 0, 0, 0, 0, 0, 0, 0.208155, -0.586667, 0, 0, 0, 0, 0, 0, 0, 0.153276, -0.668889, 0, 0, 0, 0, 0, 0, 0, 0.0916929, -0.746667, 0, 0, 0, 0, 0, 0, 0, 0.0119207, -0.82),
+"tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+}
+point_count = 10
+
+[node name="NXRPlayer" type="RigidBody3D" node_paths=PackedStringArray("_leftController", "_rightController", "_xrOrigin")]
+collision_layer = 2
+axis_lock_angular_x = true
+axis_lock_angular_y = true
+axis_lock_angular_z = true
+mass = 5.0
+script = ExtResource("1_3qkco")
+_leftController = NodePath("XROrigin3D/LeftController")
+_rightController = NodePath("XROrigin3D/RightController")
+_xrOrigin = NodePath("XROrigin3D")
+_stepHeight = 0.0
+
+[node name="XROrigin3D" type="XROrigin3D" parent="."]
+current = true
+
+[node name="LeftController" type="XRController3D" parent="XROrigin3D"]
+tracker = &"left_hand"
+script = ExtResource("5_rgojt")
+
+[node name="RayCast3D" parent="XROrigin3D/LeftController" node_paths=PackedStringArray("_controller", "_interactor") instance=ExtResource("6_3rer7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00678109, -0.00419024)
+_controller = NodePath("..")
+_interactor = NodePath("../../LeftInteractor")
+
+[node name="RightController" type="XRController3D" parent="XROrigin3D"]
+tracker = &"right_hand"
+script = ExtResource("5_rgojt")
+
+[node name="RayCast3D" parent="XROrigin3D/RightController" node_paths=PackedStringArray("_controller", "_interactor") instance=ExtResource("6_3rer7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00678109, -0.00419024)
+_controller = NodePath("..")
+_interactor = NodePath("../../RightInteractor")
+
+[node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D"]
+cull_mask = 1048559
+current = true
+
+[node name="UX" type="Node3D" parent="XROrigin3D/XRCamera3D"]
+
+[node name="LeftInteractor" type="Area3D" parent="XROrigin3D" node_paths=PackedStringArray("Controller")]
+collision_mask = 9
+script = ExtResource("7_pt58r")
+Controller = NodePath("../LeftController")
+Smoothing = 0.6
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="XROrigin3D/LeftInteractor"]
+shape = SubResource("SphereShape3D_5u2ih")
+
+[node name="InteractLine" type="Path3D" parent="XROrigin3D/LeftInteractor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.00305932)
+visible = false
+curve = SubResource("Curve3D_b5egw")
+script = ExtResource("9_uoa43")
+Resolution = 30
+SinSpeed = 10.0
+SinAmplitude = 0.002
+
+[node name="CSGPolygon3D" type="CSGPolygon3D" parent="XROrigin3D/LeftInteractor/InteractLine"]
+polygon = PackedVector2Array(0.001, 0, 0.000809017, 0.000587785, 0.000309017, 0.000951057, -0.000309017, 0.000951057, -0.000809017, 0.000587785, -0.001, -8.74228e-11, -0.000809017, -0.000587785, -0.000309017, -0.000951057, 0.000309017, -0.000951057, 0.000809017, -0.000587785)
+mode = 2
+path_node = NodePath("..")
+path_interval_type = 0
+path_interval = 0.08
+path_simplify_angle = 0.0
+path_rotation = 2
+path_rotation_accurate = false
+path_local = true
+path_continuous_u = true
+path_u_distance = 1.0
+path_joined = false
+material = SubResource("ShaderMaterial_uj2o0")
+script = ExtResource("11_tshae")
+_radius = 0.1
+
+[node name="RightInteractor" type="Area3D" parent="XROrigin3D" node_paths=PackedStringArray("Controller")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.00305932)
+collision_mask = 9
+script = ExtResource("7_pt58r")
+Controller = NodePath("../RightController")
+Smoothing = 0.6
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="XROrigin3D/RightInteractor"]
+shape = SubResource("SphereShape3D_5u2ih")
+
+[node name="InteractLine" type="Path3D" parent="XROrigin3D/RightInteractor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.00305932)
+visible = false
+curve = SubResource("Curve3D_jow1a")
+script = ExtResource("9_uoa43")
+Resolution = 30
+SinSpeed = 10.0
+SinAmplitude = 0.002
+
+[node name="CSGPolygon3D" type="CSGPolygon3D" parent="XROrigin3D/RightInteractor/InteractLine"]
+polygon = PackedVector2Array(0.001, 0, 0.000809017, 0.000587785, 0.000309017, 0.000951057, -0.000309017, 0.000951057, -0.000809017, 0.000587785, -0.001, -8.74228e-11, -0.000809017, -0.000587785, -0.000309017, -0.000951057, 0.000309017, -0.000951057, 0.000809017, -0.000587785)
+mode = 2
+path_node = NodePath("..")
+path_interval_type = 0
+path_interval = 0.08
+path_simplify_angle = 0.0
+path_rotation = 2
+path_rotation_accurate = false
+path_local = true
+path_continuous_u = true
+path_u_distance = 1.0
+path_joined = false
+material = SubResource("ShaderMaterial_uj2o0")
+script = ExtResource("11_tshae")
+_radius = 0.1
+
+[node name="Hand" parent="XROrigin3D/RightInteractor" node_paths=PackedStringArray("_rigidPlayer", "Interactor") instance=ExtResource("9_f60de")]
+transform = Transform3D(0.965445, -0.208541, 0.156293, 0.197752, 0.97683, 0.0818352, -0.169738, -0.0481002, 0.984315, 0.0127518, -0.0379714, -0.00433564)
+freeze = false
+_rigidPlayer = NodePath("../../..")
+Interactor = NodePath("..")
+
+[node name="PlayerTurnRigid" type="Node" parent="."]
+script = ExtResource("11_f60de")
+_rotationMode = 1
+metadata/_custom_type_script = "uid://d2x8o8jxj4xsa"
+
+[node name="PlayerWalk2" type="Node" parent="."]
+script = ExtResource("10_3qkco")
+_walkSpeed = 110.555
+metadata/_custom_type_script = "uid://d2x8o8jxj4xsa"

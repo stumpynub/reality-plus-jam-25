@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="PlayerSettings" load_steps=2 format=3 uid="uid://dqooh1vsmo8b8"]
+
+[ext_resource type="Script" uid="uid://cluyklfof26p7" path="res://addons/nxr/resources/scripts/PlayerSettings.cs" id="1_nek8e"]
+
+[resource]
+resource_name = "default_player_settings"
+script = ExtResource("1_nek8e")
+DominantHand = 0
+RotationMode = 0

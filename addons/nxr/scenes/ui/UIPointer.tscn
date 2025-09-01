@@ -1,0 +1,27 @@
+[gd_scene load_steps=6 format=3 uid="uid://8ap3o7qw7wri"]
+
+[ext_resource type="Script" uid="uid://c73gavottfsoe" path="res://addons/nxr/scripts/ui/Pointer.cs" id="1_08ols"]
+[ext_resource type="Script" uid="uid://csedmy4o537dc" path="res://addons/nxr/scripts/util/3D/Line3D.cs" id="2_s5s1u"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_i5ii4"]
+radius = 0.01
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_s5s1u"]
+resource_local_to_scene = true
+
+[sub_resource type="Curve" id="Curve_5jngv"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.486438, 0.583445), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[node name="NXRPointer" type="ShapeCast3D" node_paths=PackedStringArray("_line")]
+shape = SubResource("SphereShape3D_i5ii4")
+target_position = Vector3(0, 0, -2)
+script = ExtResource("1_08ols")
+_line = NodePath("Line3D")
+
+[node name="Line3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("ArrayMesh_s5s1u")
+script = ExtResource("2_s5s1u")
+Width = 0.01
+WidthCurve = SubResource("Curve_5jngv")
+metadata/_custom_type_script = "uid://csedmy4o537dc"

@@ -1,0 +1,163 @@
+[gd_scene load_steps=30 format=3 uid="uid://b5s345q0wunft"]
+
+[ext_resource type="Script" uid="uid://byrqkn5qnttu5" path="res://addons/nxr/scripts/hand/Hand.cs" id="1_rx5do"]
+[ext_resource type="PackedScene" uid="uid://b5svgttouh1uk" path="res://addons/nxr/scenes/hands/nxr_pose_animation_tree.tscn" id="3_7c2b2"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_7yags"]
+radius = 0.0809303
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_oah7f"]
+animation = &"idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_hlymv"]
+animation = &"thumb_down"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_3tirg"]
+animation = &"grip"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_j11as"]
+animation = &"trigger"
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_0q48i"]
+filter_enabled = true
+filters = ["GloveR/GeneralSkeleton:RightThumbDistal", "GloveR/GeneralSkeleton:RightThumbMetacarpal", "GloveR/GeneralSkeleton:RightThumbProximal"]
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_r7ba6"]
+filter_enabled = true
+filters = ["GloveR/GeneralSkeleton:RightLittleDistal", "GloveR/GeneralSkeleton:RightLittleIntermediate", "GloveR/GeneralSkeleton:RightLittleProximal", "GloveR/GeneralSkeleton:RightMiddleDistal", "GloveR/GeneralSkeleton:RightMiddleIntermediate", "GloveR/GeneralSkeleton:RightMiddleProximal", "GloveR/GeneralSkeleton:RightRingDistal", "GloveR/GeneralSkeleton:RightRingIntermediate", "GloveR/GeneralSkeleton:RightRingProximal", "GloveR/GeneralSkeleton:RightThumbDistal", "GloveR/GeneralSkeleton:RightThumbMetacarpal", "GloveR/GeneralSkeleton:RightThumbProximal"]
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_4l75l"]
+filter_enabled = true
+filters = ["GloveR/GeneralSkeleton:RightIndexDistal", "GloveR/GeneralSkeleton:RightIndexIntermediate", "GloveR/GeneralSkeleton:RightIndexProximal"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_soefm"]
+resource_local_to_scene = true
+graph_offset = Vector2(-468.843, -109.907)
+nodes/Animation/node = SubResource("AnimationNodeAnimation_j11as")
+nodes/Animation/position = Vector2(-560, 20)
+"nodes/Animation 2/node" = SubResource("AnimationNodeAnimation_oah7f")
+"nodes/Animation 2/position" = Vector2(-560, -120)
+"nodes/Animation 3/node" = SubResource("AnimationNodeAnimation_hlymv")
+"nodes/Animation 3/position" = Vector2(-220, 260)
+"nodes/Animation 4/node" = SubResource("AnimationNodeAnimation_3tirg")
+"nodes/Animation 4/position" = Vector2(-420, 240)
+nodes/ax_touch/node = SubResource("AnimationNodeBlend2_0q48i")
+nodes/ax_touch/position = Vector2(66.5212, 77.2077)
+nodes/grip/node = SubResource("AnimationNodeBlend2_r7ba6")
+nodes/grip/position = Vector2(-140, -20)
+nodes/output/position = Vector2(280, 120)
+nodes/trigger/node = SubResource("AnimationNodeBlend2_4l75l")
+nodes/trigger/position = Vector2(-360, -60)
+node_connections = [&"ax_touch", 0, &"grip", &"ax_touch", 1, &"Animation 3", &"grip", 0, &"trigger", &"grip", 1, &"Animation 4", &"output", 0, &"ax_touch", &"trigger", 0, &"Animation 2", &"trigger", 1, &"Animation"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_7yags"]
+animation = &"pump_grip"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_7v085"]
+resource_local_to_scene = true
+animation = &"pistol_secondary_index"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_o8j26"]
+resource_local_to_scene = true
+animation = &"RESET"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_xov5e"]
+resource_local_to_scene = true
+animation = &"RESET"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_l7evl"]
+animation = &"RESET"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_awy7u"]
+animation = &"RESET"
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_5rkta"]
+resource_local_to_scene = true
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_jhme4"]
+resource_local_to_scene = true
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_l7evl"]
+resource_local_to_scene = true
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_4akup"]
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_c61gt"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_fuywe"]
+resource_local_to_scene = true
+animation = &"rifle_primary_index_off"
+
+[sub_resource type="AnimationNodeOneShot" id="AnimationNodeOneShot_xov5e"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_omkww"]
+resource_local_to_scene = true
+graph_offset = Vector2(-897.495, -62.0382)
+nodes/Animation/node = SubResource("AnimationNodeAnimation_7yags")
+nodes/Animation/position = Vector2(-440, 480)
+nodes/BlendAnim1/node = SubResource("AnimationNodeAnimation_7v085")
+nodes/BlendAnim1/position = Vector2(-1380, 260)
+nodes/BlendAnim2/node = SubResource("AnimationNodeAnimation_o8j26")
+nodes/BlendAnim2/position = Vector2(-1380, 460)
+nodes/BlendAnim3/node = SubResource("AnimationNodeAnimation_xov5e")
+nodes/BlendAnim3/position = Vector2(-1380, 660)
+nodes/BlendAnim4/node = SubResource("AnimationNodeAnimation_l7evl")
+nodes/BlendAnim4/position = Vector2(-1380, 860)
+nodes/BlendAnim5/node = SubResource("AnimationNodeAnimation_awy7u")
+nodes/BlendAnim5/position = Vector2(-1380, 1060)
+nodes/BlendInput1/node = SubResource("AnimationNodeBlend2_5rkta")
+nodes/BlendInput1/position = Vector2(-1120, 100)
+nodes/BlendInput2/node = SubResource("AnimationNodeBlend2_jhme4")
+nodes/BlendInput2/position = Vector2(-920, 100)
+nodes/BlendInput3/node = SubResource("AnimationNodeBlend2_l7evl")
+nodes/BlendInput3/position = Vector2(-720, 100)
+nodes/BlendInput4/node = SubResource("AnimationNodeBlend2_4akup")
+nodes/BlendInput4/position = Vector2(-540, 100)
+nodes/BlendInput5/node = SubResource("AnimationNodeBlend2_c61gt")
+nodes/BlendInput5/position = Vector2(-340, 100)
+nodes/DefaultPose/node = SubResource("AnimationNodeAnimation_fuywe")
+nodes/DefaultPose/position = Vector2(-1380, 80)
+nodes/OneShot/node = SubResource("AnimationNodeOneShot_xov5e")
+nodes/OneShot/position = Vector2(-160, 100)
+nodes/output/position = Vector2(220, 100)
+node_connections = [&"BlendInput1", 0, &"DefaultPose", &"BlendInput1", 1, &"BlendAnim1", &"BlendInput2", 0, &"BlendInput1", &"BlendInput2", 1, &"BlendAnim2", &"BlendInput3", 0, &"BlendInput2", &"BlendInput3", 1, &"BlendAnim3", &"BlendInput4", 0, &"BlendInput3", &"BlendInput4", 1, &"BlendAnim4", &"BlendInput5", 0, &"BlendInput4", &"BlendInput5", 1, &"BlendAnim5", &"OneShot", 0, &"BlendInput5", &"OneShot", 1, &"Animation", &"output", 0, &"OneShot"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_t6afu"]
+xfade_time = 0.1
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_qoti4"]
+xfade_time = 0.1
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_k4d4u"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_6ave7"]
+resource_local_to_scene = true
+states/End/position = Vector2(791, 93)
+states/IdleTree/node = SubResource("AnimationNodeBlendTree_soefm")
+states/IdleTree/position = Vector2(432, 93)
+states/PoseTree/node = SubResource("AnimationNodeBlendTree_omkww")
+states/PoseTree/position = Vector2(607, 93)
+states/Start/position = Vector2(219, 93)
+transitions = ["IdleTree", "PoseTree", SubResource("AnimationNodeStateMachineTransition_t6afu"), "PoseTree", "IdleTree", SubResource("AnimationNodeStateMachineTransition_qoti4"), "Start", "IdleTree", SubResource("AnimationNodeStateMachineTransition_k4d4u")]
+graph_offset = Vector2(22, -36)
+
+[node name="Hand" type="RigidBody3D"]
+collision_layer = 2
+freeze = true
+script = ExtResource("1_rx5do")
+_inputInterpolation = 0.15
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("")
+callback_mode_process = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.0933394)
+shape = SubResource("SphereShape3D_7yags")
+
+[node name="AnimationTree2" parent="." instance=ExtResource("3_7c2b2")]
+tree_root = SubResource("AnimationNodeStateMachine_6ave7")
+parameters/PoseTree/OneShot/active = 0.0
+parameters/PoseTree/OneShot/internal_active = 0.0
+parameters/PoseTree/OneShot/request = 0.0
