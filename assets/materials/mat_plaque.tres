@@ -1,0 +1,15 @@
+[gd_resource type="StandardMaterial3D" load_steps=4 format=3 uid="uid://dauhre4mybtn"]
+
+[ext_resource type="Texture2D" uid="uid://qci8tdr8x8pu" path="res://assets/materials/flesh/others_0001_height_1k.png" id="1_gsk1i"]
+[ext_resource type="Texture2D" uid="uid://1tcv5n6c3c60" path="res://assets/materials/flesh/others_0001_normal_opengl_1k.png" id="2_ks68g"]
+[ext_resource type="Texture2D" uid="uid://btkj5yesq0xwh" path="res://assets/materials/flesh/others_0001_roughness_1k.jpg" id="3_a8x20"]
+
+[resource]
+albedo_color = Color(1, 0.909804, 0.529412, 1)
+albedo_texture = ExtResource("1_gsk1i")
+roughness = 0.29
+roughness_texture = ExtResource("3_a8x20")
+normal_enabled = true
+normal_texture = ExtResource("2_ks68g")
+uv1_scale = Vector3(0.475, 0.475, 0.475)
+uv1_triplanar = true

@@ -105,7 +105,7 @@ public partial class Stage : Node3D
 		if (_path == null) return;
 
 		// do our threaded request 
-		ResourceLoader.LoadThreadedRequest(_path, "", false, ResourceLoader.CacheMode.Replace);
+		ResourceLoader.LoadThreadedRequest(_path, "", false, ResourceLoader.CacheMode.Reuse);
 
 		// set queued true to update the thread status in _process
 		IsQueued = true;

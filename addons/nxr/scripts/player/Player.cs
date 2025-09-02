@@ -225,6 +225,7 @@ public partial class Player : CharacterBody3D
 
     private void Grounder()
     {
+        return; 
         if (IsOnCeiling()) return;
 
         Vector3 pos = GlobalPosition;

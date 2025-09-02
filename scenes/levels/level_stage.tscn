@@ -1,17 +1,15 @@
-[gd_scene load_steps=4 format=3 uid="uid://csotp5pvwxaxi"]
+[gd_scene load_steps=3 format=3 uid="uid://csotp5pvwxaxi"]
 
 [ext_resource type="Script" uid="uid://cfvi4s17uxpwk" path="res://addons/nxr/scripts/staging/Stage.cs" id="1_m6sfw"]
 [ext_resource type="Script" uid="uid://c4we5vm54syx6" path="res://addons/nxr/scripts/core/XRInitialize.cs" id="2_gq7dn"]
-[ext_resource type="PackedScene" uid="uid://c5ronj0sn4or5" path="res://scenes/levels/level_01.tscn" id="3_uthw7"]
 
 [node name="Stage" type="Node3D"]
 script = ExtResource("1_m6sfw")
-_autoTransition = false
-_queueOnReady = false
+_defaultPath = "uid://c5ronj0sn4or5"
+_startDelay = 0.1
+_endDelay = 0.1
 metadata/_custom_type_script = "uid://cfvi4s17uxpwk"
 
 [node name="XRInitialize" type="Node" parent="."]
 script = ExtResource("2_gq7dn")
 metadata/_custom_type_script = "uid://c4we5vm54syx6"
-
-[node name="Node3D" parent="." instance=ExtResource("3_uthw7")]

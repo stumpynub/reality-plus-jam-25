@@ -1,14 +1,12 @@
-[gd_scene load_steps=13 format=3 uid="uid://ctrtq0t2fqwtr"]
+[gd_scene load_steps=11 format=3 uid="uid://ctrtq0t2fqwtr"]
 
 [ext_resource type="Script" uid="uid://bdelgt54lma6n" path="res://addons/nxr/scripts/player/Player.cs" id="1_rc1uy"]
 [ext_resource type="Resource" uid="uid://dqooh1vsmo8b8" path="res://addons/nxr/resources/default_player_settings.tres" id="2_8s0nb"]
 [ext_resource type="Script" uid="uid://dsd5qvr5r2h2e" path="res://addons/nxr/scripts/core/Controller.cs" id="3_ub7va"]
 [ext_resource type="PackedScene" uid="uid://8ap3o7qw7wri" path="res://addons/nxr/scenes/ui/UIPointer.tscn" id="4_2rouu"]
-[ext_resource type="PackedScene" uid="uid://b5s345q0wunft" path="res://addons/nxr/scenes/hands/nxr_player_hand.tscn" id="5_utiyv"]
 [ext_resource type="Script" uid="uid://b7pqx80rb6u78" path="res://addons/nxr/scripts/player/components/PlayerTurn.cs" id="6_ias0r"]
 [ext_resource type="Script" uid="uid://bep8ipole76o3" path="res://addons/nxr/scripts/player/components/PlayerWalk.cs" id="7_tckao"]
 [ext_resource type="Script" uid="uid://b47k7u6qq7nt8" path="res://addons/nxr/scripts/interactable/interactors/XRControllerInteractor.cs" id="8_1b4oq"]
-[ext_resource type="Script" uid="uid://ccr8d8lu5a7tv" path="res://addons/nxr/scripts/hand/HandPoseBase.cs" id="9_m08ig"]
 [ext_resource type="Script" uid="uid://ceeilt0qd8lgv" path="res://addons/nxr/scripts/audio/PlayerStepController.cs" id="15_4utrt"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_5u2ih"]
@@ -27,6 +25,9 @@ _dominantHand = 1
 _leftController = NodePath("XROrigin3D/LeftController")
 _rightController = NodePath("XROrigin3D/RightController")
 _xrOrigin = NodePath("XROrigin3D")
+_enableHeadCollider = false
+_enableBodyCollider = false
+_stepHeight = 0.0
 
 [node name="PlayerWalk" type="Node" parent="."]
 script = ExtResource("7_tckao")
@@ -72,16 +73,8 @@ collision_mask = 9
 script = ExtResource("8_1b4oq")
 Controller = NodePath("..")
 
-[node name="HandRight" parent="XROrigin3D/RightController/RightInteractor" node_paths=PackedStringArray("Interactor") instance=ExtResource("5_utiyv")]
-transform = Transform3D(0.96266, -0.132707, 0.235956, 0.0989945, 0.983804, 0.149432, -0.251965, -0.120494, 0.960206, 0, -0.048, 0)
-Interactor = NodePath("..")
-
 [node name="CollisionShape3D" type="CollisionShape3D" parent="XROrigin3D/RightController/RightInteractor"]
 shape = SubResource("SphereShape3D_5u2ih")
-
-[node name="HandPoseBase" type="RemoteTransform3D" parent="XROrigin3D/RightController/RightInteractor"]
-script = ExtResource("9_m08ig")
-metadata/_custom_type_script = "uid://ccr8d8lu5a7tv"
 
 [node name="CSGSphere3D" type="CSGSphere3D" parent="XROrigin3D/RightController"]
 radius = 0.0269649

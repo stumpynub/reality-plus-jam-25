@@ -1,17 +1,31 @@
-[gd_scene load_steps=10 format=3 uid="uid://cjtqkp5hxm8bn"]
+[gd_scene load_steps=33 format=4 uid="uid://cjtqkp5hxm8bn"]
 
-[ext_resource type="PackedScene" uid="uid://ctrtq0t2fqwtr" path="res://addons/nxr/scenes/player/nxr_player.tscn" id="1_1wnua"]
 [ext_resource type="Script" uid="uid://dd500m0nrq3wx" path="res://scrips/Ship.cs" id="1_4qnn8"]
 [ext_resource type="Script" uid="uid://ccehg74pbum6p" path="res://addons/nxr/scripts/interactable/items/InteractableJoystick.cs" id="2_3c87n"]
+[ext_resource type="Script" uid="uid://dsd5qvr5r2h2e" path="res://addons/nxr/scripts/core/Controller.cs" id="2_3t1xx"]
 [ext_resource type="Script" uid="uid://y1lajxl5h81u" path="res://addons/nxr/resources/scripts/ResHaptic.cs" id="3_4qnn8"]
+[ext_resource type="PackedScene" uid="uid://8ap3o7qw7wri" path="res://addons/nxr/scenes/ui/UIPointer.tscn" id="3_bmqxc"]
+[ext_resource type="Script" uid="uid://b47k7u6qq7nt8" path="res://addons/nxr/scripts/interactable/interactors/XRControllerInteractor.cs" id="4_rlgcr"]
+[ext_resource type="PackedScene" uid="uid://b4ota4bhruftk" path="res://assets/models/ship/ship.glb" id="5_1grn0"]
+[ext_resource type="PackedScene" uid="uid://cc6vm61fmk5ji" path="res://addons/nxr/scenes/ui/Viewport2dIn3D.tscn" id="6_c5u2v"]
+[ext_resource type="PackedScene" uid="uid://ged0mpvlwjxo" path="res://scenes/ui/ship_ui.tscn" id="7_5ya64"]
+[ext_resource type="Texture2D" uid="uid://07k74x02xn1f" path="res://assets/images/targeting_sprite.png" id="8_2gwc4"]
+[ext_resource type="Script" uid="uid://csedmy4o537dc" path="res://addons/nxr/scripts/util/3D/Line3D.cs" id="9_8prri"]
+[ext_resource type="Script" uid="uid://x7ct4d58313m" path="res://addons/nxr/scripts/util/3D/Billboard3D.cs" id="9_ncken"]
+[ext_resource type="Shader" uid="uid://braaabt6g7p17" path="res://addons/nxr/assets/shaders/line_3d_billboard_add.gdshader" id="10_urbj2"]
+[ext_resource type="Texture2D" uid="uid://dkffhwoyuwb23" path="res://icon.svg" id="11_4cpwq"]
+[ext_resource type="Script" uid="uid://bf3d48dcrxtv8" path="res://addons/nxr/scripts/util/signal_tools/SignalAnimPlayer.cs" id="11_urbj2"]
 
-[sub_resource type="Resource" id="Resource_4qnn8"]
+[sub_resource type="SphereShape3D" id="SphereShape3D_5u2ih"]
+radius = 2.67682
+
+[sub_resource type="Resource" id="Resource_urbj2"]
 script = ExtResource("3_4qnn8")
 Frequency = 0.5
 Amplitude = 0.5
 Duration = 0.1
 
-[sub_resource type="Resource" id="Resource_1grn0"]
+[sub_resource type="Resource" id="Resource_4cpwq"]
 script = ExtResource("3_4qnn8")
 Frequency = 0.5
 Amplitude = 0.5
@@ -20,66 +34,200 @@ Duration = 0.1
 [sub_resource type="BoxShape3D" id="BoxShape3D_c5u2v"]
 size = Vector3(0.0576172, 0.22583, 0.0373535)
 
-[sub_resource type="Resource" id="Resource_ls8mp"]
+[sub_resource type="Resource" id="Resource_14gjv"]
 script = ExtResource("3_4qnn8")
 Frequency = 0.5
 Amplitude = 0.5
 Duration = 0.1
 
-[sub_resource type="Resource" id="Resource_c5u2v"]
+[sub_resource type="Resource" id="Resource_lujab"]
 script = ExtResource("3_4qnn8")
 Frequency = 0.5
 Amplitude = 0.5
 Duration = 0.1
 
-[node name="Ship" type="CharacterBody3D" node_paths=PackedStringArray("_throttle", "_joystick")]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_14gjv"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("10_urbj2")
+shader_parameter/color_tex = ExtResource("11_4cpwq")
+shader_parameter/tex_tile_factor = -0.235
+shader_parameter/tex_offset = 0.0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_4cpwq"]
+resource_local_to_scene = true
+_surfaces = [{
+"aabb": AABB(0, 0, -3.92, 1e-05, 1e-05, 3.92),
+"attribute_data": PackedByteArray("Y2Nj/wAAAACR7Xy+Y2Nj/wAAAAAAAAAAY2Nj/wAAAACR7Xw+Y2Nj/wAAgD/XyjO9Y2Nj/wAAgD8AAAAAY2Nj/wAAgD/XyjM9"),
+"format": 34359742495,
+"index_count": 12,
+"index_data": PackedByteArray("AAADAAEAAQADAAQAAQAEAAIAAgAEAAUA"),
+"material": SubResource("ShaderMaterial_14gjv"),
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 6,
+"vertex_data": PackedByteArray("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABI4XrAAAAAAAAAAABI4XrAAAAAAAAAAABI4XrA//////9/AID//////38AgP//////fwCA//////9/AID//////38AgP//////fwCA")
+}]
+
+[sub_resource type="Curve" id="Curve_urbj2"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.177711), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Animation" id="Animation_14gjv"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:CustomMaterialSetting:shader_parameter/tex_offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_4cpwq"]
+resource_name = "ray"
+length = 0.3
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:CustomMaterialSetting:shader_parameter/tex_offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_lujab"]
+_data = {
+&"RESET": SubResource("Animation_14gjv"),
+&"ray": SubResource("Animation_4cpwq")
+}
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2gwc4"]
+resource_local_to_scene = true
+size = Vector3(1, 1, 0.078125)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_urbj2"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3t1xx"]
+resource_local_to_scene = true
+transparency = 1
+shading_mode = 0
+albedo_texture = SubResource("ViewportTexture_urbj2")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5ya64"]
+size = Vector3(10, 10, 1)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ncken"]
+radius = 1.1655
+height = 5.62835
+
+[node name="Ship" type="CharacterBody3D" node_paths=PackedStringArray("_throttle", "_joystick", "_targetingShape", "_targetingSprite", "_rayLine")]
+motion_mode = 1
+wall_min_slide_angle = 3.14159
 script = ExtResource("1_4qnn8")
 _throttle = NodePath("Throttle")
 _joystick = NodePath("Joy")
+_targetingShape = NodePath("TargetingShape")
+_targetingSprite = NodePath("TargetingShape/TargetingSprite")
+_rayLine = NodePath("Blasters/RayLine")
 
-[node name="CSGBox3D" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.074988, 0.449524)
-size = Vector3(2.03516, 0.139526, 5.31018)
+[node name="XROrigin3D" type="XROrigin3D" parent="."]
+current = true
 
-[node name="NXRPlayer" parent="." instance=ExtResource("1_1wnua")]
-_gravityEnabled = false
-_enableHeadCollider = false
-_enableBodyCollider = false
-_stepHeight = 0.0
+[node name="LeftController" type="XRController3D" parent="XROrigin3D"]
+tracker = &"left_hand"
+script = ExtResource("2_3t1xx")
 
-[node name="Throttle" type="RigidBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.707107, -0.707107, 0, 0.707107, 0.707107, -0.310938, 0.65718, -0.298029)
+[node name="RayCast3D" parent="XROrigin3D/LeftController" node_paths=PackedStringArray("_controller", "_interactor") instance=ExtResource("3_bmqxc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00678109, -0.00419024)
+_controller = NodePath("..")
+_interactor = NodePath("../LeftInteractor")
+
+[node name="LeftInteractor" type="Area3D" parent="XROrigin3D/LeftController" node_paths=PackedStringArray("Controller")]
+collision_layer = 4
+collision_mask = 9
+script = ExtResource("4_rlgcr")
+Controller = NodePath("..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="XROrigin3D/LeftController/LeftInteractor"]
+shape = SubResource("SphereShape3D_5u2ih")
+
+[node name="RightController" type="XRController3D" parent="XROrigin3D"]
+tracker = &"right_hand"
+script = ExtResource("2_3t1xx")
+
+[node name="RayCast3D" parent="XROrigin3D/RightController" node_paths=PackedStringArray("_controller", "_interactor") instance=ExtResource("3_bmqxc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00678109, -0.00419024)
+_controller = NodePath("..")
+_interactor = NodePath("../RightInteractor")
+
+[node name="RightInteractor" type="Area3D" parent="XROrigin3D/RightController" node_paths=PackedStringArray("Controller")]
+collision_layer = 4
+collision_mask = 9
+script = ExtResource("4_rlgcr")
+Controller = NodePath("..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="XROrigin3D/RightController/RightInteractor"]
+shape = SubResource("SphereShape3D_5u2ih")
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="XROrigin3D/RightController"]
+radius = 0.0269649
+
+[node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D"]
+cull_mask = 1048559
+current = true
+
+[node name="UX" type="Node3D" parent="XROrigin3D/XRCamera3D"]
+
+[node name="Throttle" type="RigidBody3D" parent="." node_paths=PackedStringArray("_proxy")]
+transform = Transform3D(1, 0, 0, 0, 0.707107, -0.707107, 0, 0.707107, 0.707107, -0.282905, 0.594677, -0.29094)
+collision_layer = 8
+collision_mask = 4
 freeze = true
 script = ExtResource("2_3c87n")
+_proxy = NodePath("../ship/Throttle")
 X = 0.785398
 _xSnapDegree = 25.0
 _zSnapDegree = 0.2
-_positionMultiplier = 2.0
+_positionMultiplier = 4.0
 XRatio = 1.0
 ZRatio = nan
 _zClampMin = 0.0
 _zClampMax = 0.0
-_grabPulse = SubResource("Resource_4qnn8")
-_dropPulse = SubResource("Resource_1grn0")
+_grabPulse = SubResource("Resource_urbj2")
+_dropPulse = SubResource("Resource_4cpwq")
 metadata/_custom_type_script = "uid://ccehg74pbum6p"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Throttle"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0655518, 0)
 shape = SubResource("BoxShape3D_c5u2v")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="Throttle"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0819504, 0)
+visible = false
 size = Vector3(0.0488281, 0.186523, 0.0351563)
 
-[node name="Joy" type="RigidBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.208936, 0.65718, -0.298029)
+[node name="Joy" type="RigidBody3D" parent="." node_paths=PackedStringArray("_proxy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.285482, 0.593251, -0.277716)
+collision_layer = 8
+collision_mask = 4
 freeze = true
 script = ExtResource("2_3c87n")
+_proxy = NodePath("../ship/FlightStick")
 _returnOnDrop = true
 XRatio = 0.5
 ZRatio = 0.5
-_grabPulse = SubResource("Resource_ls8mp")
-_dropPulse = SubResource("Resource_c5u2v")
+_grabPulse = SubResource("Resource_14gjv")
+_dropPulse = SubResource("Resource_lujab")
 metadata/_custom_type_script = "uid://ccehg74pbum6p"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Joy"]
@@ -88,4 +236,91 @@ shape = SubResource("BoxShape3D_c5u2v")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="Joy"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0819504, 0)
+visible = false
 size = Vector3(0.0488281, 0.186523, 0.0351563)
+
+[node name="ship" parent="." instance=ExtResource("5_1grn0")]
+
+[node name="Throttle" parent="ship" index="1"]
+transform = Transform3D(1, 0, 0, 0, 0.707107, -0.707107, 0, 0.707107, 0.707107, -0.282905, 0.594677, -0.29094)
+
+[node name="Blasters" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.412578, -2.59454)
+
+[node name="RayLine" type="MeshInstance3D" parent="Blasters"]
+mesh = SubResource("ArrayMesh_4cpwq")
+script = ExtResource("9_8prri")
+Width = 0.494
+WidthCurve = SubResource("Curve_urbj2")
+Color = Color(0.389287, 0.389287, 0.389287, 1)
+MaterialTypeSetting = 5
+CustomMaterialSetting = SubResource("ShaderMaterial_14gjv")
+Points = PackedVector3Array(0, 0, 0, 0, 0, -3.92)
+metadata/_custom_type_script = "uid://csedmy4o537dc"
+
+[node name="SignalAnimPlayer" type="AnimationPlayer" parent="Blasters/RayLine"]
+libraries = {
+&"": SubResource("AnimationLibrary_lujab")
+}
+autoplay = "ray"
+script = ExtResource("11_urbj2")
+metadata/_custom_type_script = "uid://bf3d48dcrxtv8"
+
+[node name="2DViewportIn3D" parent="." instance=ExtResource("6_c5u2v")]
+transform = Transform3D(1, 0, 0, 0, 0.804904, 0.593405, 0, -0.593405, 0.804904, 0.00162836, 0.493716, -0.786891)
+Size = Vector2i(850, 612)
+ScreenScale = 0.4
+AllowPointer = false
+
+[node name="SubViewport" parent="2DViewportIn3D" index="0"]
+size = Vector2i(850, 612)
+
+[node name="Control" parent="2DViewportIn3D/SubViewport" index="0" instance=ExtResource("7_5ya64")]
+
+[node name="CollisionObject" parent="2DViewportIn3D" index="1"]
+collision_layer = 0
+collision_mask = 0
+
+[node name="CollisionShape3D" parent="2DViewportIn3D/CollisionObject" index="0"]
+transform = Transform3D(0.4, 0, 0, 0, 0.288, 0, 0, 0, 0.4, 0, 0, 0.000320384)
+shape = SubResource("BoxShape3D_2gwc4")
+
+[node name="Screen" parent="2DViewportIn3D" index="2"]
+transform = Transform3D(0.4, 0, 0, 0, 0.288, 0, 0, 0, 0.4, 0, 0, 0)
+surface_material_override/0 = SubResource("StandardMaterial3D_3t1xx")
+
+[node name="TargetingShape" type="ShapeCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.63568)
+shape = SubResource("BoxShape3D_5ya64")
+target_position = Vector3(0, 0, -100)
+collision_mask = 32
+
+[node name="TargetingSprite" type="Sprite3D" parent="TargetingShape"]
+transform = Transform3D(0.447947, 0, 0, 0, 0.447947, 0, 0, 0, 0.447947, 0, 0, -8.23105)
+top_level = true
+no_depth_test = true
+texture = ExtResource("8_2gwc4")
+
+[node name="Billboard3D" type="Node3D" parent="TargetingShape/TargetingSprite" node_paths=PackedStringArray("Target")]
+script = ExtResource("9_ncken")
+Target = NodePath("..")
+Mode = 1
+metadata/_custom_type_script = "uid://x7ct4d58313m"
+
+[node name="SpotLight3D" type="SpotLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.55258)
+light_energy = 30.0
+spot_range = 300.0
+spot_angle = 29.8
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.29511, 0)
+light_color = Color(0.0745098, 0.588235, 1, 1)
+light_energy = 0.15
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.585011, -2.55716e-08)
+shape = SubResource("CapsuleShape3D_ncken")
+
+[editable path="ship"]
+[editable path="2DViewportIn3D"]

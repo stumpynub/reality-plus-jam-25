@@ -12,6 +12,7 @@ public partial class InteractableJoystick : Interactable
 {
     #region Exported Properties
 
+    [Export] private Node3D _proxy; 
     [Export] private bool _returnOnDrop = false;
     [Export] public float X;
     [Export] public float Y;
@@ -20,8 +21,9 @@ public partial class InteractableJoystick : Interactable
     [Export] private float _zSnapDegree = 0;
 
 
-
     [Export] float _positionMultiplier = 1.0f; 
+
+
 
     [Export]
     public float XRatio
@@ -87,10 +89,22 @@ public partial class InteractableJoystick : Interactable
         _initRotation = GlobalRotation;
         OnGrabbed += Grabbed;
         OnFullDropped += Dropped;
+
     }
 
     public override void _Process(double delta)
     {
+
+        if (_proxy == null)
+        {
+            _proxy = this;
+        }
+
+        if (_proxy != null && _proxy != this)
+        {
+            GlobalPosition = _proxy.GlobalPosition; 
+        }
+
         base._Process(delta);
 
         UpdateJoystickRotation();
@@ -102,7 +116,7 @@ public partial class InteractableJoystick : Interactable
         if (PrimaryGrab.Interactor != null)
         {
             
-            Vector3 locPos = (ToLocal(PrimaryGrab.Interactor.GlobalPosition) - _startLocGrab) * _positionMultiplier;
+            Vector3 locPos = (_proxy.ToLocal(PrimaryGrab.Interactor.GlobalPosition) - _startLocGrab) * _positionMultiplier;
 
             X += locPos.Z;
             Z -= locPos.X;
@@ -130,9 +144,9 @@ public partial class InteractableJoystick : Interactable
         }
 
         
-        Transform3D t = Transform;
+        Transform3D t = _proxy.Transform;
         t.Basis = Basis.FromEuler(new Vector3(X, Y, Z)).Orthonormalized();
-        Transform = t;
+        _proxy.Transform = t;
     }
 
 
@@ -140,13 +154,13 @@ public partial class InteractableJoystick : Interactable
     {
         if (interactor == interactable.PrimaryGrab.Interactor)
         {
-            _primaryGrab = interactor.GlobalPosition * Transform;
-            _startLocGrab = ToLocal(interactor.GlobalPosition);
+            _primaryGrab = interactor.GlobalPosition * _proxy.Transform;
+            _startLocGrab = _proxy.ToLocal(interactor.GlobalPosition);
         }
 
         if (interactor == interactable.SecondaryGrab.Interactor)
         {
-            _startLocGrabSeconodary = ToLocal(interactor.GlobalPosition);
+            _startLocGrabSeconodary = _proxy.ToLocal(interactor.GlobalPosition);
         }
 
         _returnTween?.Kill();

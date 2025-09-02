@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://cc6vm61fmk5ji"]
 
-[ext_resource type="Script" uid="uid://bhtwbwnaksyiu" path="res://addons/nxr-godot-private/scripts/ui/Viewport2DIn3D.cs" id="1_wjlj5"]
+[ext_resource type="Script" uid="uid://bhtwbwnaksyiu" path="res://addons/nxr/scripts/ui/Viewport2DIn3D.cs" id="1_wjlj5"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_4b6jf"]
 resource_local_to_scene = true
@@ -8,14 +8,14 @@ size = Vector3(1, 1, 0.078125)
 
 [sub_resource type="QuadMesh" id="QuadMesh_er54x"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_6wbgl"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_er54x"]
 viewport_path = NodePath("SubViewport")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8msne"]
 resource_local_to_scene = true
 transparency = 1
 shading_mode = 0
-albedo_texture = SubResource("ViewportTexture_6wbgl")
+albedo_texture = SubResource("ViewportTexture_er54x")
 
 [node name="2DViewportIn3D" type="Node3D"]
 script = ExtResource("1_wjlj5")
@@ -27,18 +27,6 @@ transparent_bg = true
 msaa_2d = 3
 size = Vector2i(511, 512)
 render_target_update_mode = 4
-
-[node name="Control" type="Control" parent="SubViewport"]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="Button" type="Button" parent="SubViewport/Control"]
-layout_mode = 0
-offset_right = 8.0
-offset_bottom = 8.0
-text = "asdfasdfsadf"
 
 [node name="CollisionObject" type="StaticBody3D" parent="."]
 unique_name_in_owner = true
