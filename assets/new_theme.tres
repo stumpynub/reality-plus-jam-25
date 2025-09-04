@@ -1,0 +1,7 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://c5ufdxbm3jx47"]
+
+[ext_resource type="FontFile" uid="uid://mtlga8il3pcm" path="res://assets/fonts/Excluded-z8XrX.ttf" id="1_6pma3"]
+
+[resource]
+default_font = ExtResource("1_6pma3")
+Label/fonts/font = ExtResource("1_6pma3")

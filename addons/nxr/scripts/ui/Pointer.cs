@@ -81,7 +81,7 @@ public partial class Pointer : ShapeCast3D
 		GlobalBasis = GlobalTransform.Basis.Slerp(
 			_controller.GlobalTransform.Basis.Orthonormalized(),
 			_rotationSmoothing
-		);
+		).Orthonormalized();
 	}
 
 	public override void _Process(double delta)

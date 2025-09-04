@@ -5,12 +5,24 @@ using System;
 [GlobalClass]
 public partial class EnemyBase : CharacterBody3D, IShipTargetable
 {
-	// Called when the node enters the scene tree for the first time.
+
+	public int Health { get; set; } = 100;
+
+
+	public void Damage(int amount)
+	{
+		Health -= amount;
+		if (Health <= 0)
+		{
+			QueueFree();
+		}
+	}
+
+
 	public override void _Ready()
 	{
 	}
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
 	}

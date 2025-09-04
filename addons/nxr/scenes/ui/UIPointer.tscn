@@ -16,6 +16,7 @@ point_count = 3
 [node name="NXRPointer" type="ShapeCast3D" node_paths=PackedStringArray("_line")]
 shape = SubResource("SphereShape3D_i5ii4")
 target_position = Vector3(0, 0, -2)
+collision_mask = 512
 script = ExtResource("1_08ols")
 _line = NodePath("Line3D")
 

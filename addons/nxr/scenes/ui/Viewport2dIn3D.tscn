@@ -30,6 +30,7 @@ render_target_update_mode = 4
 
 [node name="CollisionObject" type="StaticBody3D" parent="."]
 unique_name_in_owner = true
+collision_layer = 512
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CollisionObject"]
 transform = Transform3D(0.998047, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.000320384)

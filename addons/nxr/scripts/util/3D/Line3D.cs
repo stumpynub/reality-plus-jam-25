@@ -85,12 +85,12 @@ public partial class Line3D : MeshInstance3D
 
     private void SetWidthCurve(Curve newCurve)
     {
-        if (_widthCurve != null)
+        if (_widthCurve != null  && IsInstanceValid(_widthCurve) && _widthCurve.IsConnected("changed", Callable.From(OnWidthCurveChanged)))
             _widthCurve.Changed -= OnWidthCurveChanged;
 
         _widthCurve = newCurve;
 
-        if (_widthCurve != null)
+        if (_widthCurve != null  && IsInstanceValid(_widthCurve) && !_widthCurve.IsConnected("changed", Callable.From(OnWidthCurveChanged)))
             _widthCurve.Changed += OnWidthCurveChanged;
 
         Rebuild();
@@ -98,12 +98,12 @@ public partial class Line3D : MeshInstance3D
 
     private void SetGradient(Gradient newGradient)
     {
-        if (_gradient != null)
+        if (_gradient != null && IsInstanceValid(_gradient) && _gradient.IsConnected("changed", Callable.From(OnGradientChanged)))
             _gradient.Changed -= OnGradientChanged;
 
         _gradient = newGradient;
 
-        if (_gradient != null)
+        if (_gradient != null && IsInstanceValid(_gradient) && !_gradient.IsConnected("changed", Callable.From(OnGradientChanged)))
             _gradient.Changed += OnGradientChanged;
 
         Rebuild();
@@ -129,12 +129,14 @@ public partial class Line3D : MeshInstance3D
     public override void _ExitTree()
     {
         // Extra safety
-        if (_widthCurve != null)
+        if (_widthCurve != null && IsInstanceValid(_widthCurve) && _widthCurve.IsConnected("changed", Callable.From(OnWidthCurveChanged)))
             _widthCurve.Changed -= OnWidthCurveChanged;
 
-        if (_gradient != null)
+        if (_gradient != null && IsInstanceValid(_gradient) && _gradient.IsConnected("changed", Callable.From(OnGradientChanged)))
             _gradient.Changed -= OnGradientChanged;
     }
+
+    
 
     public override void _Notification(int what)
     {
@@ -145,9 +147,9 @@ public partial class Line3D : MeshInstance3D
         else if (what == NotificationPredelete)
         {
             // Ensure delegates are detached before object is destroyed
-            if (_widthCurve != null)
+            if (_widthCurve != null  && IsInstanceValid(_widthCurve) && _widthCurve.IsConnected("changed", Callable.From(OnWidthCurveChanged)))
                 _widthCurve.Changed -= OnWidthCurveChanged;
-            if (_gradient != null)
+            if (_gradient != null && IsInstanceValid(_gradient) && _gradient.IsConnected("changed", Callable.From(OnGradientChanged)))
                 _gradient.Changed -= OnGradientChanged;
         }
     }

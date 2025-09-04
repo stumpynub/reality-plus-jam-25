@@ -109,8 +109,8 @@ public partial class XRInitialize : Node
     private void OnOpenXRSessionBegun()
     {
 
-        _openXRInterface.SessionVisible += () => Util.Recenter();
-        _openXRInterface.PoseRecentered += () => Util.Recenter();
+        //_openXRInterface.SessionVisible += () => Util.Recenter();
+        //_openXRInterface.PoseRecentered += () => Util.Recenter();
         GD.Print("OpenXR session begun. Setting up refresh rate...");
         SetupRefreshRate();
     }

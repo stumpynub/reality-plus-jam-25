@@ -5,7 +5,7 @@ using System;
 
 public partial class Ship : CharacterBody3D
 {
-	public const float Speed = 15.0f;
+	public const float Speed = 200.0f;
 	public const float JumpVelocity = 4.5f;
 
 	private Transform3D _rotXform = Transform3D.Identity;
@@ -14,66 +14,108 @@ public partial class Ship : CharacterBody3D
 	[Export] private InteractableJoystick _joystick;
 	[Export] private ShapeCast3D _targetingShape;
 	[Export] private Sprite3D _targetingSprite;
-	[Export] private Line3D _rayLine; 
+	[Export] private Line3D _rayLine;
+	[Export] private Controller _leftController;
+	[Export] private Controller _rightController;
+	[Export] public bool ShipEnabled = true;
+
 
 	private IShipTargetable _currentTarget;
 
 	public override void _Ready()
 	{
 		_rotXform = GlobalTransform;
+		_leftController.ButtonPressed += LeftButtonPressed;
+		_rightController.ButtonPressed += RightButtonPressed;
+		CallDeferred("Recenter");
+
 	}
 
 
 	public override void _PhysicsProcess(double delta)
 	{
+		HandleMovement((float)delta);
+		HandleRotation((float)delta);
+
+	}
+
+
+	public override void _Process(double delta)
+	{
+		HandleTargeting();
+
+	}
+
+
+	public void Recenter()
+	{
+		XRServer.CenterOnHmd(XRServer.RotationMode.ResetButKeepTilt, false);
+	}
+
+
+	private void HandleMovement(float delta)
+	{
+		if (!ShipEnabled) return;
+
 		Vector3 velocity = Velocity;
 		Vector3 direction = -GlobalBasis.Z * (1.0f - _throttle.XRatio);
 		float throttle = _throttle.XRatio;
 		velocity = direction * Speed;
 
 
-		Velocity = Velocity.Lerp(velocity, (float)delta);
 
-
-		MoveAndSlide();
-		HandleRotation((float)delta);
 		if (GetSlideCollisionCount() > 0)
 		{
-			GD.Print("Collided with " + GetSlideCollision(0).GetCollider());
+			KinematicCollision3D coll = GetSlideCollision(0);
+			velocity = velocity.Lerp(Vector3.Zero, 0.8f); 
+			
 		}
 
+		Velocity = Velocity.Lerp(velocity, (float)delta * 2.0f);
 
-		if (GetJoystickInteractor() != null && GetJoystickInteractor().Controller.IsButtonPressed("trigger"))
-		{
-			Node3D target = _currentTarget as Node3D;
-			_rayLine.UpdatePointPosition(1, _rayLine.ToLocal(target.GlobalPosition)); 
-			GetJoystickInteractor().Controller.Pulse(0.5, 0.5, 0.1f);
-		}
-		else
-		{
-			_rayLine.UpdatePointPosition(1, Vector3.Zero); 
-			_rayLine.Rebuild(); 
-		}
+		MoveAndSlide();
 	}
+	
 
-
-	public override void _Process(double delta)
+	private void HandleTargeting()
 	{
+
+
+		float scale = 1.0f;
+		scale = _targetingSprite.GlobalPosition.DistanceTo(GlobalPosition);
+		scale = Mathf.Clamp(scale, 1.0f, 100.0f);
+		_targetingSprite.Scale = Vector3.One;
+
 		if (_targetingShape.IsColliding())
 		{
 			Node3D collider = (Node3D)_targetingShape.GetCollider(0);
 			if (collider is IShipTargetable)
 			{
 				_targetingSprite.Visible = true;
-				_targetingSprite.GlobalPosition = _targetingShape.GetCollisionPoint(0);
+				_targetingSprite.GlobalPosition = collider.GlobalPosition;
 				_currentTarget = collider as IShipTargetable;
 			}
 
 		}
+
 		else
 		{
 			_targetingSprite.Visible = false;
 			_currentTarget = null;
+		}
+
+
+		if (GetJoystickInteractor() != null && GetJoystickInteractor().Controller.IsButtonPressed("trigger") && _currentTarget != null)
+		{
+			Node3D target = _currentTarget as Node3D;
+			_rayLine.UpdatePointPosition(1, _rayLine.ToLocal(target.GlobalPosition));
+			GetJoystickInteractor().Controller.Pulse(0.6, 1, 0.1f);
+			_currentTarget.Damage(1);
+		}
+		else
+		{
+			_rayLine.UpdatePointPosition(1, Vector3.Zero);
+			_rayLine.Rebuild();
 		}
 	}
 
@@ -92,7 +134,7 @@ public partial class Ship : CharacterBody3D
 
 		GlobalBasis = GlobalBasis.Slerp(_rotXform.Basis.Orthonormalized(), delta * 5).Orthonormalized();
 	}
-	
+
 
 	private XRControllerInteractor GetJoystickInteractor()
 	{
@@ -105,5 +147,21 @@ public partial class Ship : CharacterBody3D
 		}
 
 		return null;
+	}
+
+	private void LeftButtonPressed(string button)
+	{
+		if (button == "primary_click")
+		{
+			Recenter();
+		}
+	}
+
+	private void RightButtonPressed(string button)
+	{
+		if (button == "primary_click")
+		{
+			Recenter();
+		}
 	}
 }

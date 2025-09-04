@@ -11,7 +11,6 @@ public partial class VideoManager : VideoStreamPlayer
 	public override void _Ready()
 	{
 		Finished += VideoFinished;
-
 		PlayVideo(0); 
 	}
 

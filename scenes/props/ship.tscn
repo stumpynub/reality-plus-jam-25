@@ -1,11 +1,11 @@
-[gd_scene load_steps=33 format=4 uid="uid://cjtqkp5hxm8bn"]
+[gd_scene load_steps=37 format=4 uid="uid://cjtqkp5hxm8bn"]
 
 [ext_resource type="Script" uid="uid://dd500m0nrq3wx" path="res://scrips/Ship.cs" id="1_4qnn8"]
 [ext_resource type="Script" uid="uid://ccehg74pbum6p" path="res://addons/nxr/scripts/interactable/items/InteractableJoystick.cs" id="2_3c87n"]
 [ext_resource type="Script" uid="uid://dsd5qvr5r2h2e" path="res://addons/nxr/scripts/core/Controller.cs" id="2_3t1xx"]
 [ext_resource type="Script" uid="uid://y1lajxl5h81u" path="res://addons/nxr/resources/scripts/ResHaptic.cs" id="3_4qnn8"]
-[ext_resource type="PackedScene" uid="uid://8ap3o7qw7wri" path="res://addons/nxr/scenes/ui/UIPointer.tscn" id="3_bmqxc"]
 [ext_resource type="Script" uid="uid://b47k7u6qq7nt8" path="res://addons/nxr/scripts/interactable/interactors/XRControllerInteractor.cs" id="4_rlgcr"]
+[ext_resource type="PackedScene" uid="uid://8ap3o7qw7wri" path="res://addons/nxr/scenes/ui/UIPointer.tscn" id="4_urbj2"]
 [ext_resource type="PackedScene" uid="uid://b4ota4bhruftk" path="res://assets/models/ship/ship.glb" id="5_1grn0"]
 [ext_resource type="PackedScene" uid="uid://cc6vm61fmk5ji" path="res://addons/nxr/scenes/ui/Viewport2dIn3D.tscn" id="6_c5u2v"]
 [ext_resource type="PackedScene" uid="uid://ged0mpvlwjxo" path="res://scenes/ui/ship_ui.tscn" id="7_5ya64"]
@@ -15,24 +15,11 @@
 [ext_resource type="Shader" uid="uid://braaabt6g7p17" path="res://addons/nxr/assets/shaders/line_3d_billboard_add.gdshader" id="10_urbj2"]
 [ext_resource type="Texture2D" uid="uid://dkffhwoyuwb23" path="res://icon.svg" id="11_4cpwq"]
 [ext_resource type="Script" uid="uid://bf3d48dcrxtv8" path="res://addons/nxr/scripts/util/signal_tools/SignalAnimPlayer.cs" id="11_urbj2"]
+[ext_resource type="Shader" uid="uid://crhdmreyc783b" path="res://addons/nxr/assets/shaders/line_3d_billboard_solid_unlit.gdshader" id="16_14gjv"]
+[ext_resource type="Script" uid="uid://0rw2m0nqd47p" path="res://addons/nxr/scripts/util/3D/Trail3D.cs" id="17_lujab"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_5u2ih"]
 radius = 2.67682
-
-[sub_resource type="Resource" id="Resource_urbj2"]
-script = ExtResource("3_4qnn8")
-Frequency = 0.5
-Amplitude = 0.5
-Duration = 0.1
-
-[sub_resource type="Resource" id="Resource_4cpwq"]
-script = ExtResource("3_4qnn8")
-Frequency = 0.5
-Amplitude = 0.5
-Duration = 0.1
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_c5u2v"]
-size = Vector3(0.0576172, 0.22583, 0.0373535)
 
 [sub_resource type="Resource" id="Resource_14gjv"]
 script = ExtResource("3_4qnn8")
@@ -41,6 +28,21 @@ Amplitude = 0.5
 Duration = 0.1
 
 [sub_resource type="Resource" id="Resource_lujab"]
+script = ExtResource("3_4qnn8")
+Frequency = 0.5
+Amplitude = 0.5
+Duration = 0.1
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_c5u2v"]
+size = Vector3(0.0576172, 0.22583, 0.0373535)
+
+[sub_resource type="Resource" id="Resource_com5w"]
+script = ExtResource("3_4qnn8")
+Frequency = 0.5
+Amplitude = 0.5
+Duration = 0.1
+
+[sub_resource type="Resource" id="Resource_l6e2c"]
 script = ExtResource("3_4qnn8")
 Frequency = 0.5
 Amplitude = 0.5
@@ -115,14 +117,14 @@ _data = {
 resource_local_to_scene = true
 size = Vector3(1, 1, 0.078125)
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_urbj2"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_w4e26"]
 viewport_path = NodePath("SubViewport")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3t1xx"]
 resource_local_to_scene = true
 transparency = 1
 shading_mode = 0
-albedo_texture = SubResource("ViewportTexture_urbj2")
+albedo_texture = SubResource("ViewportTexture_w4e26")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_5ya64"]
 size = Vector3(10, 10, 1)
@@ -131,7 +133,29 @@ size = Vector3(10, 10, 1)
 radius = 1.1655
 height = 5.62835
 
-[node name="Ship" type="CharacterBody3D" node_paths=PackedStringArray("_throttle", "_joystick", "_targetingShape", "_targetingSprite", "_rayLine")]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_r8gjb"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("16_14gjv")
+shader_parameter/tex_tile_factor = 1.0
+shader_parameter/tex_offset = 0.0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_l6e2c"]
+resource_local_to_scene = true
+_surfaces = [{
+"aabb": AABB(0, 0, 0, 1e-05, 1e-05, 1e-05),
+"attribute_data": PackedByteArray("/////wAAAADNzMy8/////wAAAAAAAAAA/////wAAAADNzMw8/////wAAAADNzMy8/////wAAAAAAAAAA/////wAAAADNzMw8/////wAAAADNzMy8/////wAAAAAAAAAA/////wAAAADNzMw8/////wAAAADNzMy8/////wAAAAAAAAAA/////wAAAADNzMw8/////wAAAADNzMy8/////wAAAAAAAAAA/////wAAAADNzMw8/////wAAAADNzMy8/////wAAAAAAAAAA/////wAAAADNzMw8/////wAAAADNzMy8/////wAAAAAAAAAA/////wAAAADNzMw8/////wAAAADNzMy8/////wAAAAAAAAAA/////wAAAADNzMw8/////wAAAADNzMy8/////wAAAAAAAAAA/////wAAAADNzMw8/////wAAAADNzMy8/////wAAAAAAAAAA/////wAAAADNzMw8/////wAAAADNzMy8/////wAAAAAAAAAA/////wAAAADNzMw8/////wAAAADNzMy8/////wAAAAAAAAAA/////wAAAADNzMw8/////wAAAADNzMy8/////wAAAAAAAAAA/////wAAAADNzMw8/////wAAAADNzMy8/////wAAAAAAAAAA/////wAAAADNzMw8/////wAAAADNzMy8/////wAAAAAAAAAA/////wAAAADNzMw8/////wAAAADNzMy8/////wAAAAAAAAAA/////wAAAADNzMw8/////wAAAADNzMy8/////wAAAAAAAAAA/////wAAAADNzMw8/////wAAAADNzMy8/////wAAAAAAAAAA/////wAAAADNzMw8/////wAAAADNzMy8/////wAAAAAAAAAA/////wAAAADNzMw8/////wAAAADNzMy8/////wAAAAAAAAAA/////wAAAADNzMw8"),
+"format": 34359742495,
+"index_count": 228,
+"index_data": PackedByteArray("AAADAAEAAQADAAQAAQAEAAIAAgAEAAUAAwAGAAQABAAGAAcABAAHAAUABQAHAAgABgAJAAcABwAJAAoABwAKAAgACAAKAAsACQAMAAoACgAMAA0ACgANAAsACwANAA4ADAAPAA0ADQAPABAADQAQAA4ADgAQABEADwASABAAEAASABMAEAATABEAEQATABQAEgAVABMAEwAVABYAEwAWABQAFAAWABcAFQAYABYAFgAYABkAFgAZABcAFwAZABoAGAAbABkAGQAbABwAGQAcABoAGgAcAB0AGwAeABwAHAAeAB8AHAAfAB0AHQAfACAAHgAhAB8AHwAhACIAHwAiACAAIAAiACMAIQAkACIAIgAkACUAIgAlACMAIwAlACYAJAAnACUAJQAnACgAJQAoACYAJgAoACkAJwAqACgAKAAqACsAKAArACkAKQArACwAKgAtACsAKwAtAC4AKwAuACwALAAuAC8ALQAwAC4ALgAwADEALgAxAC8ALwAxADIAMAAzADEAMQAzADQAMQA0ADIAMgA0ADUAMwA2ADQANAA2ADcANAA3ADUANQA3ADgANgA5ADcANwA5ADoANwA6ADgAOAA6ADsA"),
+"material": SubResource("ShaderMaterial_r8gjb"),
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 60,
+"vertex_data": PackedByteArray("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAgAAAAAAAAACAAAAAAAAAAIAAAAAAAAAAgAAAAAAAAACAAAAAAAAAAIAAAAAAAAAAgAAAAAAAAACAAAAAAAAAAIAAAAAAAAAAgAAAAAAAAACAAAAAAAAAAIAAAAAAAAAAgAAAAAAAAACAAAAAAAAAAIAAAAAAAAAAgAAAAAAAAACAAAAAAAAAAIAAAAAAAAAAgAAAAAAAAACAAAAAAAAAAIAAAAAAAAAAgAAAAAAAAACAAAAAAAAAAIAAAAAAAAAAgAAAAAAAAACAAAAAAAAAAIAAAAAAAAAAgAAAAAAAAACAAAAAAAAAAIAAAAAAAAAAgAAAAAAAAACAAAAAAAAAAIAAAAAAAAAAgAAAAAAAAACAAAAAAAAAAIAAAAAAAAAAgAAAAAAAAACAAAAAAAAAAIAAAAAAAAAAgAAAAAAAAACAAAAAAAAAAIAAAAAAAAAAgAAAAAAAAACAAAAAAAAAAIAAAAAAAAAAgAAAAAAAAACAAAAAAAAAAIAAAAAAAAAAgAAAAAAAAACAAAAAAAAAAIAAAAAAAAAAgAAAAAAAAACAAAAAAAAAAIAAAAAAAAAAgAAAAAAAAACAAAAAAAAAAIAAAAAAAAAAgAAAAAAAAACA")
+}]
+
+[node name="Ship" type="CharacterBody3D" node_paths=PackedStringArray("_throttle", "_joystick", "_targetingShape", "_targetingSprite", "_rayLine", "_leftController", "_rightController")]
 motion_mode = 1
 wall_min_slide_angle = 3.14159
 script = ExtResource("1_4qnn8")
@@ -140,54 +164,57 @@ _joystick = NodePath("Joy")
 _targetingShape = NodePath("TargetingShape")
 _targetingSprite = NodePath("TargetingShape/TargetingSprite")
 _rayLine = NodePath("Blasters/RayLine")
+_leftController = NodePath("Pilot/XROrigin3D/LeftController")
+_rightController = NodePath("Pilot/XROrigin3D/RightController")
 
-[node name="XROrigin3D" type="XROrigin3D" parent="."]
+[node name="Pilot" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.13687, 0.0972346)
+
+[node name="XROrigin3D" type="XROrigin3D" parent="Pilot"]
 current = true
 
-[node name="LeftController" type="XRController3D" parent="XROrigin3D"]
+[node name="LeftController" type="XRController3D" parent="Pilot/XROrigin3D"]
 tracker = &"left_hand"
 script = ExtResource("2_3t1xx")
 
-[node name="RayCast3D" parent="XROrigin3D/LeftController" node_paths=PackedStringArray("_controller", "_interactor") instance=ExtResource("3_bmqxc")]
+[node name="LeftInteractor" type="Area3D" parent="Pilot/XROrigin3D/LeftController" node_paths=PackedStringArray("Controller")]
+collision_layer = 4
+collision_mask = 9
+script = ExtResource("4_rlgcr")
+Controller = NodePath("..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Pilot/XROrigin3D/LeftController/LeftInteractor"]
+shape = SubResource("SphereShape3D_5u2ih")
+
+[node name="RayCast3D" parent="Pilot/XROrigin3D/LeftController" node_paths=PackedStringArray("_controller", "_interactor") instance=ExtResource("4_urbj2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00678109, -0.00419024)
 _controller = NodePath("..")
 _interactor = NodePath("../LeftInteractor")
 
-[node name="LeftInteractor" type="Area3D" parent="XROrigin3D/LeftController" node_paths=PackedStringArray("Controller")]
+[node name="RightController" type="XRController3D" parent="Pilot/XROrigin3D"]
+tracker = &"right_hand"
+script = ExtResource("2_3t1xx")
+
+[node name="RightInteractor" type="Area3D" parent="Pilot/XROrigin3D/RightController" node_paths=PackedStringArray("Controller")]
 collision_layer = 4
 collision_mask = 9
 script = ExtResource("4_rlgcr")
 Controller = NodePath("..")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="XROrigin3D/LeftController/LeftInteractor"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Pilot/XROrigin3D/RightController/RightInteractor"]
 shape = SubResource("SphereShape3D_5u2ih")
 
-[node name="RightController" type="XRController3D" parent="XROrigin3D"]
-tracker = &"right_hand"
-script = ExtResource("2_3t1xx")
+[node name="CSGSphere3D" type="CSGSphere3D" parent="Pilot/XROrigin3D/RightController"]
+radius = 0.0269649
 
-[node name="RayCast3D" parent="XROrigin3D/RightController" node_paths=PackedStringArray("_controller", "_interactor") instance=ExtResource("3_bmqxc")]
+[node name="RayCast3D" parent="Pilot/XROrigin3D/RightController" node_paths=PackedStringArray("_controller", "_interactor") instance=ExtResource("4_urbj2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00678109, -0.00419024)
 _controller = NodePath("..")
 _interactor = NodePath("../RightInteractor")
 
-[node name="RightInteractor" type="Area3D" parent="XROrigin3D/RightController" node_paths=PackedStringArray("Controller")]
-collision_layer = 4
-collision_mask = 9
-script = ExtResource("4_rlgcr")
-Controller = NodePath("..")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="XROrigin3D/RightController/RightInteractor"]
-shape = SubResource("SphereShape3D_5u2ih")
-
-[node name="CSGSphere3D" type="CSGSphere3D" parent="XROrigin3D/RightController"]
-radius = 0.0269649
-
-[node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D"]
+[node name="XRCamera3D" type="XRCamera3D" parent="Pilot/XROrigin3D"]
 cull_mask = 1048559
 current = true
-
-[node name="UX" type="Node3D" parent="XROrigin3D/XRCamera3D"]
 
 [node name="Throttle" type="RigidBody3D" parent="." node_paths=PackedStringArray("_proxy")]
 transform = Transform3D(1, 0, 0, 0, 0.707107, -0.707107, 0, 0.707107, 0.707107, -0.282905, 0.594677, -0.29094)
@@ -197,15 +224,13 @@ freeze = true
 script = ExtResource("2_3c87n")
 _proxy = NodePath("../ship/Throttle")
 X = 0.785398
-_xSnapDegree = 25.0
-_zSnapDegree = 0.2
-_positionMultiplier = 4.0
+_positionMultiplier = 3.0
 XRatio = 1.0
 ZRatio = nan
 _zClampMin = 0.0
 _zClampMax = 0.0
-_grabPulse = SubResource("Resource_urbj2")
-_dropPulse = SubResource("Resource_4cpwq")
+_grabPulse = SubResource("Resource_14gjv")
+_dropPulse = SubResource("Resource_lujab")
 metadata/_custom_type_script = "uid://ccehg74pbum6p"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Throttle"]
@@ -226,8 +251,8 @@ _proxy = NodePath("../ship/FlightStick")
 _returnOnDrop = true
 XRatio = 0.5
 ZRatio = 0.5
-_grabPulse = SubResource("Resource_14gjv")
-_dropPulse = SubResource("Resource_lujab")
+_grabPulse = SubResource("Resource_com5w")
+_dropPulse = SubResource("Resource_l6e2c")
 metadata/_custom_type_script = "uid://ccehg74pbum6p"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Joy"]
@@ -270,16 +295,11 @@ metadata/_custom_type_script = "uid://bf3d48dcrxtv8"
 transform = Transform3D(1, 0, 0, 0, 0.804904, 0.593405, 0, -0.593405, 0.804904, 0.00162836, 0.493716, -0.786891)
 Size = Vector2i(850, 612)
 ScreenScale = 0.4
-AllowPointer = false
 
 [node name="SubViewport" parent="2DViewportIn3D" index="0"]
 size = Vector2i(850, 612)
 
 [node name="Control" parent="2DViewportIn3D/SubViewport" index="0" instance=ExtResource("7_5ya64")]
-
-[node name="CollisionObject" parent="2DViewportIn3D" index="1"]
-collision_layer = 0
-collision_mask = 0
 
 [node name="CollisionShape3D" parent="2DViewportIn3D/CollisionObject" index="0"]
 transform = Transform3D(0.4, 0, 0, 0, 0.288, 0, 0, 0, 0.4, 0, 0, 0.000320384)
@@ -292,11 +312,11 @@ surface_material_override/0 = SubResource("StandardMaterial3D_3t1xx")
 [node name="TargetingShape" type="ShapeCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.63568)
 shape = SubResource("BoxShape3D_5ya64")
-target_position = Vector3(0, 0, -100)
+target_position = Vector3(0, 0, -1000)
 collision_mask = 32
 
 [node name="TargetingSprite" type="Sprite3D" parent="TargetingShape"]
-transform = Transform3D(0.447947, 0, 0, 0, 0.447947, 0, 0, 0, 0.447947, 0, 0, -8.23105)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -8.23105)
 top_level = true
 no_depth_test = true
 texture = ExtResource("8_2gwc4")
@@ -309,8 +329,8 @@ metadata/_custom_type_script = "uid://x7ct4d58313m"
 
 [node name="SpotLight3D" type="SpotLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.55258)
-light_energy = 30.0
-spot_range = 300.0
+light_energy = 60.0
+spot_range = 600.0
 spot_angle = 29.8
 
 [node name="OmniLight3D" type="OmniLight3D" parent="."]
@@ -321,6 +341,18 @@ light_energy = 0.15
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.585011, -2.55716e-08)
 shape = SubResource("CapsuleShape3D_ncken")
+
+[node name="Trail3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.01609, 0.164223, 0.480967)
+mesh = SubResource("ArrayMesh_l6e2c")
+script = ExtResource("17_lujab")
+MaxLength = 1.0
+EnableLerp = true
+LerpSpeed = 50.0
+MaxPoints = 20
+UseGlobalSpace = true
+Points = PackedVector3Array(-2.01609, 0.164223, 0.480967, -2.01609, 0.164223, 0.480967, -2.01609, 0.164223, 0.480967, -2.01609, 0.164223, 0.480967, -2.01609, 0.164223, 0.480967, -2.01609, 0.164223, 0.480967, -2.01609, 0.164223, 0.480967, -2.01609, 0.164223, 0.480967, -2.01609, 0.164223, 0.480967, -2.01609, 0.164223, 0.480967, -2.01609, 0.164223, 0.480967, -2.01609, 0.164223, 0.480967, -2.01609, 0.164223, 0.480967, -2.01609, 0.164223, 0.480967, -2.01609, 0.164223, 0.480967, -2.01609, 0.164223, 0.480967, -2.01609, 0.164223, 0.480967, -2.01609, 0.164223, 0.480967, -2.01609, 0.164223, 0.480967, -2.01609, 0.164223, 0.480967)
+metadata/_custom_type_script = "uid://0rw2m0nqd47p"
 
 [editable path="ship"]
 [editable path="2DViewportIn3D"]

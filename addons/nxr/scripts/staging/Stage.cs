@@ -74,7 +74,7 @@ public partial class Stage : Node3D
 	}
 
 
-	public async void QueueTransition(string newPath = "")
+	public void QueueTransition(string newPath = "")
 	{
 
 		// emit first to give time to react 
@@ -91,7 +91,6 @@ public partial class Stage : Node3D
 		}
 
 		//wait for a couple seconds to show our delicious loading progress
-		await ToSignal(GetTree().CreateTimer(_endDelay), "timeout");
 
 		// set path to new path parameter if provided
 		if (newPath != "")
@@ -118,7 +117,7 @@ public partial class Stage : Node3D
 	}
 
 
-	private async void Transition()
+	private void Transition()
 	{
 		// set queued to false to stop updating the threaded status 
 		IsQueued = false;
@@ -130,7 +129,6 @@ public partial class Stage : Node3D
 		Node newScene = packed.Instantiate();
 
 		// optional delay for waiting for effects 
-		await ToSignal(GetTree().CreateTimer(_startDelay), "timeout");
 
 		// delete loading scene if available
 		if (IsInstanceValid(_loadingSceneInstance)) _loadingSceneInstance.QueueFree();

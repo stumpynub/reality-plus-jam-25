@@ -9,7 +9,8 @@
 [ext_resource type="Script" uid="uid://b7vdq7oofngy0" path="res://addons/nxr/scripts/player/components_physics/PlayerWalkRigid.cs" id="10_3qkco"]
 [ext_resource type="Shader" uid="uid://7w32832defs1" path="res://addons/nxr/assets/shader_pointer.gdshader" id="10_hho0e"]
 [ext_resource type="Script" uid="uid://d2x8o8jxj4xsa" path="res://addons/nxr/scripts/player/components/PlayerTurnRigid.cs" id="11_f60de"]
-[ext_resource type="Script" uid="uid://ddxhq234tr10l" path="res://addons/nxr/scripts/util/PolygonPath.cs" id="11_tshae"]
+[ext_resource type="Script" uid="uid://ddxhq234tr10l" path="res://addons/nxr/scripts/util/PolygonCircle.cs" id="11_tshae"]
+
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_5u2ih"]
 radius = 2.67682
